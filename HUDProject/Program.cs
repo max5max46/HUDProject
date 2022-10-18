@@ -13,6 +13,7 @@ namespace HUDProject
         static int Shield;
         static int MaxHealth;
         static int MaxShield;
+        static string HealthStatus;
 
         //Lives System varibles
         static int Lives;
@@ -44,26 +45,27 @@ namespace HUDProject
 
 
             // Varibles Given by theoretical Game
-            int Damage = 150;
+            int Damage = 300;
             int HealAmount = 10;
             int RegenShieldAmount = 15;
             int XPAdded = 10;
             int LivesAdded = 100;
 
             //Testing
-            ShowHUD();
-            Console.ReadKey(true);
-            AddLives(LivesAdded);
-            Console.ReadKey(true);
-            ShowHUD();
-            Console.ReadKey(true);
-
-
-
 
             ShowHUD();
             Console.ReadKey(true);
             AddXPLevelUp(XPAdded);
+            Console.ReadKey(true);
+            ShowHUD();
+            Console.ReadKey(true);
+
+            TakeDamage(Damage);
+            Console.ReadKey(true);
+            ShowHUD();
+            Console.ReadKey(true);
+
+            TakeDamage(Damage);
             Console.ReadKey(true);
             ShowHUD();
             Console.ReadKey(true);
@@ -98,19 +100,22 @@ namespace HUDProject
         //Displays the HUD
         static void ShowHUD()
         {
+            HealthStatusSet();
             Console.WriteLine("\n Lives: " + Lives + "   Level: " + Level + "   XP: " + XP + "   XP to Next Level: " + (XPToNextLevelUp - XP));
-            Console.WriteLine("\n ----------------------------------------------------------------\n");
-            Console.WriteLine(" Health: " + Health + "  Shield:  " + Shield + "\n");
+            Console.WriteLine(" ----------------------------------------------------------------");
+            Console.WriteLine(" Health: " + Health + "  Shield:  " + Shield);
+            Console.WriteLine(" ----------------------------------------------------------------");
+            Console.WriteLine(HealthStatus);
         }
 
         //Takes Shield, Health, and Lives Away Based on Inputed Value Also handles Game Over
         static void TakeDamage(int DamageAmount)
         {
             int TempDamage;
-            Console.WriteLine("Player is about to take (" + DamageAmount + ") Damage");
+            Console.WriteLine(" Player is about to take (" + DamageAmount + ") Damage");
             if (DamageAmount < 0)
             {
-                Console.WriteLine("Error - DamageAmount Varible Does not equel a Positive Number");
+                Console.WriteLine(" Error - DamageAmount Varible Does not equel a Positive Number");
             }
             else
             {
@@ -125,7 +130,7 @@ namespace HUDProject
                     if (TempDamage > 0)  Health = Health - TempDamage;
                 }
 
-                Console.WriteLine("Player Took (" + DamageAmount + ") Damage");
+                Console.WriteLine(" Player Took (" + DamageAmount + ") Damage");
 
                 if (Health <= 0)
                 {
@@ -136,14 +141,14 @@ namespace HUDProject
                     {
                         Health = MaxHealth;
                         Shield = MaxShield;
-                        Console.WriteLine("Player Lost a Live (-1)");
-                        Console.WriteLine("Player's Health and Shield are reset to Max");
+                        Console.WriteLine(" Player Lost a Live (-1)");
+                        Console.WriteLine(" Player's Health and Shield are reset to Max");
                     }
                     //Game Over
                     else
                     {
-                        Console.WriteLine("Player Lives have Reached (0)");
-                        Console.WriteLine("Game Over Has Occurred Reseting Game");
+                        Console.WriteLine(" Player Lives have Reached (0)");
+                        Console.WriteLine(" Game Over Has Occurred Reseting Game");
                         ResetGame();
                     }
                     
@@ -155,11 +160,11 @@ namespace HUDProject
         static void Heal(int HealAmount)
         {
             int TempHealth;
-            Console.WriteLine("Player is about to Heal (" + HealAmount + ") Health");
+            Console.WriteLine(" Player is about to Heal (" + HealAmount + ") Health");
 
             if (HealAmount < 0)
             {
-                Console.WriteLine("Error - HealAmount Varible Does not equel a Positive Number");
+                Console.WriteLine(" Error - HealAmount Varible Does not equel a Positive Number");
             }
             else
             {
@@ -169,11 +174,11 @@ namespace HUDProject
                 {
                     TempHealth = MaxHealth - TempHealth; 
                     Health = MaxHealth;
-                    Console.WriteLine("Player Healed (" + TempHealth + ") Health");
+                    Console.WriteLine(" Player Healed (" + TempHealth + ") Health");
                 }
                 else
                 {
-                    Console.WriteLine("Player Healed (" + HealAmount + ") Health");
+                    Console.WriteLine(" Player Healed (" + HealAmount + ") Health");
                 }
                 
             }
@@ -183,11 +188,11 @@ namespace HUDProject
         static void RegenerateShield(int RegenShieldAmount)
         {
             int TempShield;
-            Console.WriteLine("Player is about to Regenerate (" + RegenShieldAmount + ") Shield");
+            Console.WriteLine(" Player is about to Regenerate (" + RegenShieldAmount + ") Shield");
 
             if (RegenShieldAmount < 0)
             {
-                Console.WriteLine("Error - RegenShieldAmount Varible Does not equel a Positive Number");
+                Console.WriteLine(" Error - RegenShieldAmount Varible Does not equel a Positive Number");
             }
             else
             {
@@ -197,11 +202,11 @@ namespace HUDProject
                 {
                     TempShield = MaxShield - TempShield;
                     Shield = MaxShield;
-                    Console.WriteLine("Player Regenerated (" + TempShield + ") Shield");
+                    Console.WriteLine(" Player Regenerated (" + TempShield + ") Shield");
                 }
                 else
                 {
-                    Console.WriteLine("Player Regenerated (" + RegenShieldAmount + ") Shield");
+                    Console.WriteLine(" Player Regenerated (" + RegenShieldAmount + ") Shield");
                 }
             }
         }
@@ -209,16 +214,16 @@ namespace HUDProject
         static void AddXPLevelUp(int XPAdded)
         {
             int NumberOfTimesLeveled = 0;
-            Console.WriteLine("Player is about to Receive (" + XPAdded + ") XP");
+            Console.WriteLine(" Player is about to Receive (" + XPAdded + ") XP");
 
             if (XPAdded < 0)
             {
-                Console.WriteLine("Error - XPAdded Varible Does not equel a Positive Number");
+                Console.WriteLine(" Error - XPAdded Varible Does not equel a Positive Number");
             }
             else
             {
                 XP += XPAdded;
-                Console.WriteLine("Player gained (" + XPAdded + ") XP");
+                Console.WriteLine(" Player gained (" + XPAdded + ") XP");
 
                 while (XP >= XPToNextLevelUp)
                 {
@@ -233,10 +238,10 @@ namespace HUDProject
 
                 if (NumberOfTimesLeveled > 0)
                 {
-                    Console.WriteLine("Player gained (" + NumberOfTimesLeveled + ") Levels");
-                    Console.WriteLine("Player gained (" + (NumberOfTimesLeveled * HealthIncreaseOnLvl) + ") Max Health");
-                    Console.WriteLine("Player gained (" + (NumberOfTimesLeveled * ShieldIncreaseOnLvl) + ") Max Shield");
-                    Console.WriteLine("Player's Health and Shield are set to Max");
+                    Console.WriteLine(" Player gained (" + NumberOfTimesLeveled + ") Levels");
+                    Console.WriteLine(" Player gained (" + (NumberOfTimesLeveled * HealthIncreaseOnLvl) + ") Max Health");
+                    Console.WriteLine(" Player gained (" + (NumberOfTimesLeveled * ShieldIncreaseOnLvl) + ") Max Shield");
+                    Console.WriteLine(" Player's Health and Shield are set to Max");
                 }
                     
             }
@@ -244,7 +249,7 @@ namespace HUDProject
 
         static void ResetGame()
         {
-            Console.WriteLine("Player Stats are about to Reset");
+            Console.WriteLine(" Player Stats are about to Reset");
 
             MaxHealth = 100;
             MaxShield = 100;
@@ -259,17 +264,17 @@ namespace HUDProject
             HealthIncreaseOnLvl = 20;
             ShieldIncreaseOnLvl = 20;
 
-            Console.WriteLine("Player Stats are Successfully Reset");
+            Console.WriteLine(" Player Stats are Successfully Reset");
         }
 
         static void AddLives(int AddedLives)
         {
             int TempLives;
-            Console.WriteLine("Player is about to Receive (" + AddedLives + ") Lives");
+            Console.WriteLine(" Player is about to Receive (" + AddedLives + ") Lives");
 
             if (AddedLives < 0)
             {
-                Console.WriteLine("Error - AddedLives Varible Does not equel a Positive Number");
+                Console.WriteLine(" Error - AddedLives Varible Does not equel a Positive Number");
             }
             else
             {
@@ -279,12 +284,39 @@ namespace HUDProject
                 {
                     TempLives = MaxLives - TempLives;
                     Lives = MaxLives;
-                    Console.WriteLine("Player Gained (" + TempLives + ") Lives");
+                    Console.WriteLine(" Player Gained (" + TempLives + ") Lives");
                 }
                 else
                 {
-                    Console.WriteLine("Player Gained (" + AddedLives + ") Lives");
+                    Console.WriteLine(" Player Gained (" + AddedLives + ") Lives");
                 }
+            }
+        }
+        static void HealthStatusSet()
+        {
+            if (Health == MaxHealth)
+            {
+                HealthStatus = " You're in Prefect Health\n";
+            }
+
+            if (Health < MaxHealth && (int)Math.Round(MaxHealth * 0.75) <= Health)
+            {
+                HealthStatus = " You're feeling Fine\n";
+            }
+
+            if ((int)Math.Round(MaxHealth * 0.75) > Health && (int)Math.Round(MaxHealth * 0.5) <= Health)
+            {
+                HealthStatus = " You're Hurt\n";
+            }
+
+            if ((int)Math.Round(MaxHealth * 0.5) > Health && (int)Math.Round(MaxHealth * 0.25) <= Health)
+            {
+                HealthStatus = " You're Barely Standing\n";
+            }
+
+            if ((int)Math.Round(MaxHealth * 0.25) > Health && MaxHealth + 1 <= Health)
+            {
+                HealthStatus =  " You're Live Hangs in the Balance\n";
             }
         }
     }
