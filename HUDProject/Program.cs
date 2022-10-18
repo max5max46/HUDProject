@@ -45,7 +45,7 @@ namespace HUDProject
 
 
             // Varibles Given by theoretical Game
-            int Damage = 300;
+            int Damage = 149;
             int HealAmount = 10;
             int RegenShieldAmount = 15;
             int XPAdded = 10;
@@ -55,6 +55,12 @@ namespace HUDProject
 
             ShowHUD();
             Console.ReadKey(true);
+            TakeDamage(Damage);
+            Console.ReadKey(true);
+            ShowHUD();
+            Console.ReadKey(true);
+
+
             AddXPLevelUp(XPAdded);
             Console.ReadKey(true);
             ShowHUD();
@@ -65,11 +71,13 @@ namespace HUDProject
             ShowHUD();
             Console.ReadKey(true);
 
-            TakeDamage(Damage);
+            XPAdded = 200;
+            AddXPLevelUp(XPAdded);
             Console.ReadKey(true);
             ShowHUD();
             Console.ReadKey(true);
 
+            Damage = 159;
             TakeDamage(Damage);
             Console.ReadKey(true);
             ShowHUD();
@@ -115,7 +123,9 @@ namespace HUDProject
             Console.WriteLine(" Player is about to take (" + DamageAmount + ") Damage");
             if (DamageAmount < 0)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(" Error - DamageAmount Varible Does not equel a Positive Number");
+                Console.ResetColor();
             }
             else
             {
@@ -164,7 +174,9 @@ namespace HUDProject
 
             if (HealAmount < 0)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(" Error - HealAmount Varible Does not equel a Positive Number");
+                Console.ResetColor();
             }
             else
             {
@@ -192,7 +204,9 @@ namespace HUDProject
 
             if (RegenShieldAmount < 0)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(" Error - RegenShieldAmount Varible Does not equel a Positive Number");
+                Console.ResetColor();
             }
             else
             {
@@ -218,7 +232,9 @@ namespace HUDProject
 
             if (XPAdded < 0)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(" Error - XPAdded Varible Does not equel a Positive Number");
+                Console.ResetColor();
             }
             else
             {
@@ -249,6 +265,7 @@ namespace HUDProject
 
         static void ResetGame()
         {
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine(" Player Stats are about to Reset");
 
             MaxHealth = 100;
@@ -265,6 +282,7 @@ namespace HUDProject
             ShieldIncreaseOnLvl = 20;
 
             Console.WriteLine(" Player Stats are Successfully Reset");
+            Console.ResetColor();
         }
 
         static void AddLives(int AddedLives)
@@ -274,7 +292,9 @@ namespace HUDProject
 
             if (AddedLives < 0)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(" Error - AddedLives Varible Does not equel a Positive Number");
+                Console.ResetColor();
             }
             else
             {
