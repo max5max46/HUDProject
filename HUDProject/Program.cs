@@ -14,8 +14,9 @@ namespace HUDProject
         static int MaxHealth;
         static int MaxShield;
 
-        //Lives
+        //Lives System varibles
         static int Lives;
+        static int MaxLives;
 
         //Level up System varibles
         static int Level;
@@ -33,7 +34,8 @@ namespace HUDProject
             Shield = MaxShield;
 
             Lives = 3;
-            
+            MaxLives = 99;
+
             Level = 1;
             XP = 0;
             XPToNextLevelUp = 100;
@@ -46,8 +48,19 @@ namespace HUDProject
             int HealAmount = 10;
             int RegenShieldAmount = 15;
             int XPAdded = 10;
+            int LivesAdded = 100;
 
             //Testing
+            ShowHUD();
+            Console.ReadKey(true);
+            AddLives(LivesAdded);
+            Console.ReadKey(true);
+            ShowHUD();
+            Console.ReadKey(true);
+
+
+
+
             ShowHUD();
             Console.ReadKey(true);
             AddXPLevelUp(XPAdded);
@@ -90,6 +103,7 @@ namespace HUDProject
             Console.WriteLine(" Health: " + Health + "  Shield:  " + Shield + "\n");
         }
 
+        //Takes Shield, Health, and Lives Away Based on Inputed Value Also handles Game Over
         static void TakeDamage(int DamageAmount)
         {
             int TempDamage;
@@ -117,10 +131,22 @@ namespace HUDProject
                 {
                     Health = MaxHealth;
                     Lives = Lives - 1;
-                    Health = MaxHealth;
-                    Shield = MaxShield;
-                    Console.WriteLine("Player Lost a Live (-1)");
-                    Console.WriteLine("Player's Health and Shield are reset to Max");
+
+                    if (Lives != 0)
+                    {
+                        Health = MaxHealth;
+                        Shield = MaxShield;
+                        Console.WriteLine("Player Lost a Live (-1)");
+                        Console.WriteLine("Player's Health and Shield are reset to Max");
+                    }
+                    //Game Over
+                    else
+                    {
+                        Console.WriteLine("Player Lives have Reached (0)");
+                        Console.WriteLine("Game Over Has Occurred Reseting Game");
+                        ResetGame();
+                    }
+                    
                 }
                     
             }
@@ -236,5 +262,30 @@ namespace HUDProject
             Console.WriteLine("Player Stats are Successfully Reset");
         }
 
+        static void AddLives(int AddedLives)
+        {
+            int TempLives;
+            Console.WriteLine("Player is about to Receive (" + AddedLives + ") Lives");
+
+            if (AddedLives < 0)
+            {
+                Console.WriteLine("Error - AddedLives Varible Does not equel a Positive Number");
+            }
+            else
+            {
+                TempLives = Lives;
+                Lives += AddedLives;
+                if (Lives >= MaxLives)
+                {
+                    TempLives = MaxLives - TempLives;
+                    Lives = MaxLives;
+                    Console.WriteLine("Player Gained (" + TempLives + ") Lives");
+                }
+                else
+                {
+                    Console.WriteLine("Player Gained (" + AddedLives + ") Lives");
+                }
+            }
+        }
     }
 }
