@@ -43,66 +43,165 @@ namespace HUDProject
             HealthIncreaseOnLvl = 20;
             ShieldIncreaseOnLvl = 20;
 
-
-            // Varibles Given by theoretical Game
-            int Damage = 149;
-            int HealAmount = 10;
-            int RegenShieldAmount = 15;
-            int XPAdded = 10;
-            int LivesAdded = 100;
+            bool YourStuck = true;
+            int MakeItStop = 43;
 
             //Testing
+            while (YourStuck == true)
 
-            ShowHUD();
-            Console.ReadKey(true);
-            TakeDamage(Damage);
-            Console.ReadKey(true);
-            ShowHUD();
-            Console.ReadKey(true);
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("\n Hello Test Subject (" + MakeItStop + ")\n Let have Some Fun Today (:\n Testing Mode Active\n Loading Normal Play...\n");
+                Console.ResetColor();
+                Console.ReadKey(true);
 
+                ShowHUD();
+                Console.ReadKey(true);
+                TakeDamage(120);
+                Console.ReadKey(true);
 
-            AddXPLevelUp(XPAdded);
-            Console.ReadKey(true);
-            ShowHUD();
-            Console.ReadKey(true);
+                ShowHUD();
+                Console.ReadKey(true);
+                Heal(14);
+                Console.ReadKey(true);
 
-            TakeDamage(Damage);
-            Console.ReadKey(true);
-            ShowHUD();
-            Console.ReadKey(true);
+                ShowHUD();
+                Console.ReadKey(true);
+                RegenerateShield(250);
+                Console.ReadKey(true);
 
-            XPAdded = 200;
-            AddXPLevelUp(XPAdded);
-            Console.ReadKey(true);
-            ShowHUD();
-            Console.ReadKey(true);
+                ShowHUD();
+                Console.ReadKey(true);
+                AddLives(1);
+                Console.ReadKey(true);
 
-            Damage = 159;
-            TakeDamage(Damage);
-            Console.ReadKey(true);
-            ShowHUD();
-            Console.ReadKey(true);
+                ShowHUD();
+                Console.ReadKey(true);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("\n Lets say an Enemy Has Died\n We may now Add XP\n");
+                Console.ResetColor();
+                Console.ReadKey(true);
 
-            Heal(HealAmount);
-            Console.ReadKey(true);
-            ShowHUD();
-            Console.ReadKey(true);
+                AddXPLevelUp(46);
+                Console.ReadKey(true);
 
-            RegenerateShield(RegenShieldAmount);
-            Console.ReadKey(true);
-            ShowHUD();
-            Console.ReadKey(true);
+                ShowHUD();
+                Console.ReadKey(true);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("\n We have Some XP\n Lets Hit " + XPToNextLevelUp + "\n");
+                Console.ResetColor();
+                Console.ReadKey(true);
 
-            TakeDamage(Damage);
-            Console.ReadKey(true);
-            ShowHUD();
-            Console.ReadKey(true);
+                AddXPLevelUp(XPToNextLevelUp - 46);
+                Console.ReadKey(true);
 
-            ResetGame();
-            Console.ReadKey(true);
-            ShowHUD();
-            Console.ReadKey(true);
+                ShowHUD();
+                Console.ReadKey(true);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("\n Perfect\n Now Lets Prompt Some Errors \n");
+                Console.ResetColor();
+                Console.ReadKey(true);
 
+                TakeDamage(-10);
+                Console.ReadKey(true);
+
+                ShowHUD();
+                Console.ReadKey(true);
+                Heal(-99);
+                Console.ReadKey(true);
+
+                ShowHUD();
+                Console.ReadKey(true);
+                RegenerateShield(-145);
+                Console.ReadKey(true);
+
+                ShowHUD();
+                Console.ReadKey(true);
+                AddLives(-45);
+                Console.ReadKey(true);
+
+                ShowHUD();
+                Console.ReadKey(true);
+                AddXPLevelUp(-1000);
+                Console.ReadKey(true);
+
+                ShowHUD();
+                Console.ReadKey(true);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("\n Good\n Now Lets Test Variable Ranges \n");
+                Console.ResetColor();
+                Console.ReadKey(true);
+
+                Heal(200);
+                Console.ReadKey(true);
+
+                ShowHUD();
+                Console.ReadKey(true);
+                RegenerateShield(366);
+                Console.ReadKey(true);
+
+                ShowHUD();
+                Console.ReadKey(true);
+                AddLives(100);
+                Console.ReadKey(true);
+
+                ShowHUD();
+                Console.ReadKey(true);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("\n Almost Done\n Lets Overload XP \n");
+                Console.ResetColor();
+                Console.ReadKey(true);
+
+                AddXPLevelUp(1000);
+                Console.ReadKey(true);
+
+                ShowHUD();
+                Console.ReadKey(true);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("\n Very Good\n Time for the Last Section \n Reseting Stats...");
+                Console.ResetColor();
+                Console.ReadKey(true);
+
+                ResetGame();
+                Console.ReadKey(true);
+
+                ShowHUD();
+                Console.ReadKey(true);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("\n Now For My Favorite Part\n Overloading Damage\n");
+                Console.ResetColor();
+                Console.ReadKey(true);
+
+                TakeDamage(200);
+                Console.ReadKey(true);
+
+                ShowHUD();
+                Console.ReadKey(true);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("\n Thank You for Your Cooperation\n");
+                Console.ResetColor();
+                Console.ReadKey(true);
+
+                TakeDamage(200);
+                Console.ReadKey(true);
+
+                ShowHUD();
+                Console.ReadKey(true);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("\n Goodbye (:\n");
+                Console.ResetColor();
+                Console.ReadKey(true);
+
+                TakeDamage(200);
+                Console.ReadKey(true);
+
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\n Initializing Next Test\n");
+                Console.ResetColor();
+                Console.ReadKey(true);
+                Console.Clear();
+                MakeItStop += 1;
+            }
         }
 
         //Displays the HUD
@@ -124,7 +223,7 @@ namespace HUDProject
             if (DamageAmount < 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(" Error - DamageAmount Varible Does not equel a Positive Number");
+                Console.WriteLine(" Error - DamageAmount Variable Does not equel a Positive Number");
                 Console.ResetColor();
             }
             else
@@ -167,6 +266,7 @@ namespace HUDProject
             }
         }
 
+        // Heals your Health Based on Inputed Value
         static void Heal(int HealAmount)
         {
             int TempHealth;
@@ -175,7 +275,7 @@ namespace HUDProject
             if (HealAmount < 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(" Error - HealAmount Varible Does not equel a Positive Number");
+                Console.WriteLine(" Error - HealAmount Variable Does not equel a Positive Number");
                 Console.ResetColor();
             }
             else
@@ -197,6 +297,7 @@ namespace HUDProject
             
         }
 
+        // Regenerates your Shield Based on Inputed Value
         static void RegenerateShield(int RegenShieldAmount)
         {
             int TempShield;
@@ -205,7 +306,7 @@ namespace HUDProject
             if (RegenShieldAmount < 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(" Error - RegenShieldAmount Varible Does not equel a Positive Number");
+                Console.WriteLine(" Error - RegenShieldAmount Variable Does not equel a Positive Number");
                 Console.ResetColor();
             }
             else
@@ -225,6 +326,7 @@ namespace HUDProject
             }
         }
 
+        //Handles XP Gaining and Level ups
         static void AddXPLevelUp(int XPAdded)
         {
             int NumberOfTimesLeveled = 0;
@@ -233,7 +335,7 @@ namespace HUDProject
             if (XPAdded < 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(" Error - XPAdded Varible Does not equel a Positive Number");
+                Console.WriteLine(" Error - XPAdded Variable Does not equel a Positive Number");
                 Console.ResetColor();
             }
             else
@@ -263,10 +365,11 @@ namespace HUDProject
             }
         }
 
+        //Resets Varibles to Base State
         static void ResetGame()
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine(" Player Stats are about to Reset");
+            Console.WriteLine("\n Player Stats are about to Reset");
 
             MaxHealth = 100;
             MaxShield = 100;
@@ -285,6 +388,7 @@ namespace HUDProject
             Console.ResetColor();
         }
 
+        //Adds Lives Based on inputed Value
         static void AddLives(int AddedLives)
         {
             int TempLives;
@@ -293,7 +397,7 @@ namespace HUDProject
             if (AddedLives < 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(" Error - AddedLives Varible Does not equel a Positive Number");
+                Console.WriteLine(" Error - AddedLives Variable Does not equel a Positive Number");
                 Console.ResetColor();
             }
             else
@@ -312,11 +416,13 @@ namespace HUDProject
                 }
             }
         }
+
+        //Sets the Health Status to different Strings based on Health
         static void HealthStatusSet()
         {
             if (Health == MaxHealth)
             {
-                HealthStatus = " You're in Prefect Health\n";
+                HealthStatus = " You're in Perfect Health\n";
             }
 
             if (Health < MaxHealth && (int)Math.Round(MaxHealth * 0.75) <= Health)
