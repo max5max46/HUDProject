@@ -223,7 +223,7 @@ namespace HUDProject
             if (DamageAmount < 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(" Error - DamageAmount Variable Does not equel a Positive Number");
+                Console.WriteLine(" Error - DamageAmount Variable Does not equal a Positive Number");
                 Console.ResetColor();
             }
             else
@@ -275,7 +275,7 @@ namespace HUDProject
             if (HealAmount < 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(" Error - HealAmount Variable Does not equel a Positive Number");
+                Console.WriteLine(" Error - HealAmount Variable Does not equal a Positive Number");
                 Console.ResetColor();
             }
             else
@@ -306,7 +306,7 @@ namespace HUDProject
             if (RegenShieldAmount < 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(" Error - RegenShieldAmount Variable Does not equel a Positive Number");
+                Console.WriteLine(" Error - RegenShieldAmount Variable Does not equal a Positive Number");
                 Console.ResetColor();
             }
             else
@@ -335,7 +335,7 @@ namespace HUDProject
             if (XPAdded < 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(" Error - XPAdded Variable Does not equel a Positive Number");
+                Console.WriteLine(" Error - XPAdded Variable Does not equal a Positive Number");
                 Console.ResetColor();
             }
             else
@@ -397,7 +397,7 @@ namespace HUDProject
             if (AddedLives < 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(" Error - AddedLives Variable Does not equel a Positive Number");
+                Console.WriteLine(" Error - AddedLives Variable Does not equal a Positive Number");
                 Console.ResetColor();
             }
             else
