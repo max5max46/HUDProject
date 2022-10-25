@@ -49,7 +49,7 @@ namespace HUDProject
             HealthIncreaseOnLvl = 20;
             ShieldIncreaseOnLvl = 20;
 
-            CurrentWeapon = 1;
+            CurrentWeapon = 0;
 
             //Array Setup
             Weapons[0] = "Sword";
@@ -80,6 +80,18 @@ namespace HUDProject
             ShowHUD();
             Console.ReadKey(true);
             Fire();
+            Console.ReadKey(true);
+            Reload();
+            Console.ReadKey(true);
+            ShowHUD();
+            Console.ReadKey(true);
+
+            Console.WriteLine("\n Switch to Shot gun\n");
+            CurrentWeapon = 1;
+
+            ShowHUD();
+            Console.ReadKey(true);
+            Fire();
             Fire();
             Fire();
             Console.ReadKey(true);
@@ -90,6 +102,24 @@ namespace HUDProject
             ShowHUD();
             Console.ReadKey(true);
 
+            Console.WriteLine("\n Switch to Minigun\n");
+            CurrentWeapon = 3;
+
+            ShowHUD();
+            Console.ReadKey(true);
+            Reload();
+            ShowHUD();
+            Console.ReadKey(true);
+            Fire();
+            Fire();
+            Fire();
+            Console.ReadKey(true);
+            ShowHUD();
+            Console.ReadKey(true);
+            Reload();
+            Console.ReadKey(true);
+            ShowHUD();
+            Console.ReadKey(true);
 
 
             //Testing
