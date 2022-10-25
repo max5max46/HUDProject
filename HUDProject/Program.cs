@@ -79,9 +79,16 @@ namespace HUDProject
 
             ShowHUD();
             Console.ReadKey(true);
-
-
-
+            Fire();
+            Fire();
+            Fire();
+            Console.ReadKey(true);
+            ShowHUD();
+            Console.ReadKey(true);
+            Reload();
+            Console.ReadKey(true);
+            ShowHUD();
+            Console.ReadKey(true);
 
 
 
@@ -247,11 +254,13 @@ namespace HUDProject
         static void ShowHUD()
         {
             HealthStatusSet();
-            Console.WriteLine("\n Lives: " + Lives + "   Level: " + Level + "   XP: " + XP + "   XP to Next Level: " + (XPToNextLevelUp - XP));
-            Console.WriteLine(" ---------------------------------------------------------------------------------");
-            Console.WriteLine(" Health: " + Health + "  Shield:  " + Shield + "  Ammo:  " + Ammo[CurrentWeapon] + "/" + AmmoMax[CurrentWeapon]);
-            Console.WriteLine(" ---------------------------------------------------------------------------------");
-            Console.WriteLine(HealthStatus + "       Current Weapon: " + Weapons[CurrentWeapon] + "\n");
+            Console.WriteLine("\n #-------------------------------------------------------------------------------#");
+            Console.WriteLine("  Lives: " + Lives + "   Level: " + Level + "   XP: " + XP + "   XP to Next Level: " + (XPToNextLevelUp - XP));
+            Console.WriteLine(" #-------------------------------------------------------------------------------#");
+            Console.WriteLine("  Health: " + Health + "  Shield:  " + Shield + "  Ammo:  " + Ammo[CurrentWeapon] + "/" + AmmoMax[CurrentWeapon]);
+            Console.WriteLine(" #-------------------------------------------------------------------------------#");
+            Console.WriteLine(" " + HealthStatus + "       Current Weapon: " + Weapons[CurrentWeapon]);
+            Console.WriteLine(" #-------------------------------------------------------------------------------#\n");
         }
 
         //Takes Shield, Health, and Lives Away Based on Inputed Value Also handles Game Over
@@ -481,12 +490,54 @@ namespace HUDProject
 
             if ((int)Math.Round(MaxHealth * 0.25) > Health && MaxHealth + 1 <= Health)
             {
-                HealthStatus =  " You're Live Hangs in the Balance";
+                HealthStatus =  " You're Life Hangs in the Balance";
             }
         }
 
         static void Fire()
         {
+            
+
+            if (Weapons[CurrentWeapon] == "Sword")
+            {
+                Console.WriteLine(" Player Swings The (" + Weapons[CurrentWeapon] + ")");
+                return;
+            }
+
+            Console.WriteLine(" Player is about to Shoot The (" + Weapons[CurrentWeapon] + ")");
+
+            if (Ammo[CurrentWeapon] <= 0)
+            {
+                Ammo[CurrentWeapon] = 0;
+                Console.WriteLine(" Player Could not fire the (" + Weapons[CurrentWeapon] + ") It has no Ammo");
+            }
+            else
+            {
+                Ammo[CurrentWeapon] -= 1;
+                Console.WriteLine(" Player Fired The (" + Weapons[CurrentWeapon] + ") Losing 1 Ammo");
+            }
+
+
+        }
+        static void Reload()
+        {
+            if (Weapons[CurrentWeapon] == Weapons[0])
+            {
+                Console.WriteLine(" Player Can't seem to Reload a (" + Weapons[CurrentWeapon] + ")");
+                return;
+            }
+
+            Console.WriteLine(" Player is about to Reload The (" + Weapons[CurrentWeapon] + ")");
+
+            if (Ammo[CurrentWeapon] == AmmoMax[CurrentWeapon])
+            {
+                Console.WriteLine(" Player Can't Reload a Full Clip");
+            }
+            else
+            {
+                Console.WriteLine(" Player Reloads The (" + Weapons[CurrentWeapon] + ") for (" + (AmmoMax[CurrentWeapon] - Ammo[CurrentWeapon]) + ")");
+                Ammo[CurrentWeapon] = AmmoMax[CurrentWeapon];
+            }
 
         }
     }
