@@ -26,6 +26,12 @@ namespace HUDProject
         static int HealthIncreaseOnLvl;
         static int ShieldIncreaseOnLvl;
 
+        //Weapon Arrays and Ints
+        static int CurrentWeapon;
+        static int[] Ammo = new int[7];
+        static int[] AmmoMax = new int[7];
+        static string[] Weapons = new string[7];
+
         static void Main(string[] args)
         {
             //Varible Setup
@@ -43,8 +49,41 @@ namespace HUDProject
             HealthIncreaseOnLvl = 20;
             ShieldIncreaseOnLvl = 20;
 
-            bool YourStuck = true;
+            CurrentWeapon = 1;
+
+            //Array Setup
+            Weapons[0] = "Sword";
+            Weapons[1] = "Double Barrel Shotgun";
+            Weapons[2] = "Rail Spike Launcher";
+            Weapons[3] = "Minigun";
+            Weapons[4] = "Dart Pistol";
+            Weapons[5] = "Crossbow";
+
+            AmmoMax[0] = 0;
+            AmmoMax[1] = 2;
+            AmmoMax[2] = 4;
+            AmmoMax[3] = 200;
+            AmmoMax[4] = 7;
+            AmmoMax[5] = 15;
+
+            Ammo[0] = AmmoMax[0];
+            Ammo[1] = AmmoMax[1];
+            Ammo[2] = AmmoMax[2];
+            Ammo[3] = AmmoMax[3];
+            Ammo[4] = AmmoMax[4];
+            Ammo[5] = AmmoMax[5];
+
+            bool YourStuck = false;
             int MakeItStop = 43;
+
+
+            ShowHUD();
+            Console.ReadKey(true);
+
+
+
+
+
 
             //Testing
             while (YourStuck == true)
@@ -209,10 +248,10 @@ namespace HUDProject
         {
             HealthStatusSet();
             Console.WriteLine("\n Lives: " + Lives + "   Level: " + Level + "   XP: " + XP + "   XP to Next Level: " + (XPToNextLevelUp - XP));
-            Console.WriteLine(" ----------------------------------------------------------------");
-            Console.WriteLine(" Health: " + Health + "  Shield:  " + Shield);
-            Console.WriteLine(" ----------------------------------------------------------------");
-            Console.WriteLine(HealthStatus);
+            Console.WriteLine(" ---------------------------------------------------------------------------------");
+            Console.WriteLine(" Health: " + Health + "  Shield:  " + Shield + "  Ammo:  " + Ammo[CurrentWeapon] + "/" + AmmoMax[CurrentWeapon]);
+            Console.WriteLine(" ---------------------------------------------------------------------------------");
+            Console.WriteLine(HealthStatus + "       Current Weapon: " + Weapons[CurrentWeapon] + "\n");
         }
 
         //Takes Shield, Health, and Lives Away Based on Inputed Value Also handles Game Over
@@ -422,28 +461,33 @@ namespace HUDProject
         {
             if (Health == MaxHealth)
             {
-                HealthStatus = " You're in Perfect Health\n";
+                HealthStatus = " You're in Perfect Health";
             }
 
             if (Health < MaxHealth && (int)Math.Round(MaxHealth * 0.75) <= Health)
             {
-                HealthStatus = " You're feeling Fine\n";
+                HealthStatus = " You're feeling Fine";
             }
 
             if ((int)Math.Round(MaxHealth * 0.75) > Health && (int)Math.Round(MaxHealth * 0.5) <= Health)
             {
-                HealthStatus = " You're Hurt\n";
+                HealthStatus = " You're Hurt";
             }
 
             if ((int)Math.Round(MaxHealth * 0.5) > Health && (int)Math.Round(MaxHealth * 0.25) <= Health)
             {
-                HealthStatus = " You're Barely Standing\n";
+                HealthStatus = " You're Barely Standing";
             }
 
             if ((int)Math.Round(MaxHealth * 0.25) > Health && MaxHealth + 1 <= Health)
             {
-                HealthStatus =  " You're Live Hangs in the Balance\n";
+                HealthStatus =  " You're Live Hangs in the Balance";
             }
+        }
+
+        static void Fire()
+        {
+
         }
     }
 }
