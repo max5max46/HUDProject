@@ -34,93 +34,13 @@ namespace HUDProject
 
         static void Main(string[] args)
         {
-            //Varible Setup
-            MaxHealth = 100;
-            MaxShield = 100;
-            Health = MaxHealth;
-            Shield = MaxShield;
+            ResetGame();
 
-            Lives = 3;
-            MaxLives = 99;
-
-            Level = 1;
-            XP = 0;
-            XPToNextLevelUp = 100;
-            HealthIncreaseOnLvl = 20;
-            ShieldIncreaseOnLvl = 20;
-
-            CurrentWeapon = 0;
-
-            //Array Setup
-            Weapons[0] = "Sword";
-            Weapons[1] = "Double Barrel Shotgun";
-            Weapons[2] = "Rail Spike Launcher";
-            Weapons[3] = "Minigun";
-            Weapons[4] = "Dart Pistol";
-            Weapons[5] = "Crossbow";
-
-            AmmoMax[0] = 0;
-            AmmoMax[1] = 2;
-            AmmoMax[2] = 4;
-            AmmoMax[3] = 200;
-            AmmoMax[4] = 7;
-            AmmoMax[5] = 15;
-
-            Ammo[0] = AmmoMax[0];
-            Ammo[1] = AmmoMax[1];
-            Ammo[2] = AmmoMax[2];
-            Ammo[3] = AmmoMax[3];
-            Ammo[4] = AmmoMax[4];
-            Ammo[5] = AmmoMax[5];
-
-            bool YourStuck = false;
+            bool YourStuck = true;
             int MakeItStop = 43;
 
 
-            ShowHUD();
-            Console.ReadKey(true);
-            Fire();
-            Console.ReadKey(true);
-            Reload();
-            Console.ReadKey(true);
-            ShowHUD();
-            Console.ReadKey(true);
-
-            Console.WriteLine("\n Switch to Shot gun\n");
-            CurrentWeapon = 1;
-
-            ShowHUD();
-            Console.ReadKey(true);
-            Fire();
-            Fire();
-            Fire();
-            Console.ReadKey(true);
-            ShowHUD();
-            Console.ReadKey(true);
-            Reload();
-            Console.ReadKey(true);
-            ShowHUD();
-            Console.ReadKey(true);
-
-            Console.WriteLine("\n Switch to Minigun\n");
-            CurrentWeapon = 3;
-
-            ShowHUD();
-            Console.ReadKey(true);
-            Reload();
-            ShowHUD();
-            Console.ReadKey(true);
-            Fire();
-            Fire();
-            Fire();
-            Console.ReadKey(true);
-            ShowHUD();
-            Console.ReadKey(true);
-            Reload();
-            Console.ReadKey(true);
-            ShowHUD();
-            Console.ReadKey(true);
-
+            
 
             //Testing
             while (YourStuck == true)
@@ -200,6 +120,57 @@ namespace HUDProject
                 Console.ReadKey(true);
                 AddXPLevelUp(-1000);
                 Console.ReadKey(true);
+
+
+                ShowHUD();
+                Console.ReadKey(true);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("\n Cool now we Test Weapons\n BABY!!!!!!! \n");
+                Console.ResetColor();
+                Console.ReadKey(true);
+
+                Fire();
+                Console.ReadKey(true);
+                Reload();
+                Console.ReadKey(true);
+                ShowHUD();
+                Console.ReadKey(true);
+
+                Console.WriteLine("\n Switch to Shot gun\n");
+                CurrentWeapon = 1;
+
+                ShowHUD();
+                Console.ReadKey(true);
+                Fire();
+                Fire();
+                Fire();
+                Console.ReadKey(true);
+                ShowHUD();
+                Console.ReadKey(true);
+                Reload();
+                Console.ReadKey(true);
+                ShowHUD();
+                Console.ReadKey(true);
+
+                Console.WriteLine("\n Switch to Minigun\n");
+                CurrentWeapon = 3;
+
+                ShowHUD();
+                Console.ReadKey(true);
+                Reload();
+                ShowHUD();
+                Console.ReadKey(true);
+                Fire();
+                Fire();
+                Fire();
+                Console.ReadKey(true);
+                ShowHUD();
+                Console.ReadKey(true);
+                Reload();
+                Console.ReadKey(true);
+                ShowHUD();
+                Console.ReadKey(true);
+
 
                 ShowHUD();
                 Console.ReadKey(true);
@@ -438,18 +409,45 @@ namespace HUDProject
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("\n Player Stats are about to Reset");
 
+            //Variables
+
             MaxHealth = 100;
             MaxShield = 100;
             Health = MaxHealth;
             Shield = MaxShield;
 
             Lives = 3;
+            MaxLives = 99;
 
             Level = 1;
             XP = 0;
             XPToNextLevelUp = 100;
             HealthIncreaseOnLvl = 20;
             ShieldIncreaseOnLvl = 20;
+
+            CurrentWeapon = 0;
+
+            //Array Setup
+            Weapons[0] = "Sword";
+            Weapons[1] = "Double Barrel Shotgun";
+            Weapons[2] = "Rail Spike Launcher";
+            Weapons[3] = "Minigun";
+            Weapons[4] = "Dart Pistol";
+            Weapons[5] = "Crossbow";
+
+            AmmoMax[0] = 0;
+            AmmoMax[1] = 2;
+            AmmoMax[2] = 4;
+            AmmoMax[3] = 200;
+            AmmoMax[4] = 7;
+            AmmoMax[5] = 15;
+
+            Ammo[0] = AmmoMax[0];
+            Ammo[1] = AmmoMax[1];
+            Ammo[2] = AmmoMax[2];
+            Ammo[3] = AmmoMax[3];
+            Ammo[4] = AmmoMax[4];
+            Ammo[5] = AmmoMax[5];
 
             Console.WriteLine(" Player Stats are Successfully Reset");
             Console.ResetColor();
