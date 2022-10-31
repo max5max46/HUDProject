@@ -283,7 +283,7 @@ namespace HUDProject
         //Displays the HUD
         static void ShowHUD()
         {
-            HealthStatusSet();
+            SetHealthStatus();
             Console.WriteLine("\n #-------------------------------------------------------------------------------#");
             Console.WriteLine("  Lives: " + Lives + "   Level: " + Level + "   XP: " + XP + "   XP to Next Level: " + (XPToNextLevelUp - XP));
             Console.WriteLine(" #-------------------------------------------------------------------------------#");
@@ -303,44 +303,41 @@ namespace HUDProject
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(" Error - DamageAmount Variable Does not equal a Positive Number");
                 Console.ResetColor();
+                return;
             }
-            else
+            TempDamage = DamageAmount - Shield;
+
+            Shield = Shield - DamageAmount;
+
+            if (Shield <= 0)
             {
-                TempDamage = DamageAmount - Shield;
+                Shield = 0;
 
-                Shield = Shield - DamageAmount;
+                if (TempDamage > 0) Health = Health - TempDamage;
+            }
 
-                if (Shield <= 0)
-                {
-                    Shield = 0;
+            Console.WriteLine(" Player Took (" + DamageAmount + ") Damage");
 
-                    if (TempDamage > 0)  Health = Health - TempDamage;
-                }
+            if (Health <= 0)
+            {
+                Health = MaxHealth;
+                Lives = Lives - 1;
 
-                Console.WriteLine(" Player Took (" + DamageAmount + ") Damage");
-
-                if (Health <= 0)
+                if (Lives != 0)
                 {
                     Health = MaxHealth;
-                    Lives = Lives - 1;
-
-                    if (Lives != 0)
-                    {
-                        Health = MaxHealth;
-                        Shield = MaxShield;
-                        Console.WriteLine(" Player Lost a Live (-1)");
-                        Console.WriteLine(" Player's Health and Shield are reset to Max");
-                    }
-                    //Game Over
-                    else
-                    {
-                        Console.WriteLine(" Player Lives have Reached (0)");
-                        Console.WriteLine(" Game Over Has Occurred Reseting Game");
-                        ResetGame();
-                    }
-                    
+                    Shield = MaxShield;
+                    Console.WriteLine(" Player Lost a Live (-1)");
+                    Console.WriteLine(" Player's Health and Shield are reset to Max");
                 }
-                    
+                //Game Over
+                else
+                {
+                    Console.WriteLine(" Player Lives have Reached (0)");
+                    Console.WriteLine(" Game Over Has Occurred Reseting Game");
+                    ResetGame();
+                }
+
             }
         }
 
@@ -355,24 +352,21 @@ namespace HUDProject
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(" Error - HealAmount Variable Does not equal a Positive Number");
                 Console.ResetColor();
+                return;
+            }
+            TempHealth = Health;
+            Health = Health + HealAmount;
+            if (Health >= MaxHealth)
+            {
+                TempHealth = MaxHealth - TempHealth;
+                Health = MaxHealth;
+                Console.WriteLine(" Player Healed (" + TempHealth + ") Health");
             }
             else
             {
-                TempHealth = Health;
-                Health = Health + HealAmount;
-                if (Health >= MaxHealth)
-                {
-                    TempHealth = MaxHealth - TempHealth; 
-                    Health = MaxHealth;
-                    Console.WriteLine(" Player Healed (" + TempHealth + ") Health");
-                }
-                else
-                {
-                    Console.WriteLine(" Player Healed (" + HealAmount + ") Health");
-                }
-                
+                Console.WriteLine(" Player Healed (" + HealAmount + ") Health");
             }
-            
+
         }
 
         // Regenerates your Shield Based on Inputed Value
@@ -386,21 +380,19 @@ namespace HUDProject
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(" Error - RegenShieldAmount Variable Does not equal a Positive Number");
                 Console.ResetColor();
+                return;
+            }
+            TempShield = Shield;
+            Shield = Shield + RegenShieldAmount;
+            if (Shield >= MaxShield)
+            {
+                TempShield = MaxShield - TempShield;
+                Shield = MaxShield;
+                Console.WriteLine(" Player Regenerated (" + TempShield + ") Shield");
             }
             else
             {
-                TempShield = Shield;
-                Shield = Shield + RegenShieldAmount;
-                if (Shield >= MaxShield)
-                {
-                    TempShield = MaxShield - TempShield;
-                    Shield = MaxShield;
-                    Console.WriteLine(" Player Regenerated (" + TempShield + ") Shield");
-                }
-                else
-                {
-                    Console.WriteLine(" Player Regenerated (" + RegenShieldAmount + ") Shield");
-                }
+                Console.WriteLine(" Player Regenerated (" + RegenShieldAmount + ") Shield");
             }
         }
 
@@ -415,31 +407,28 @@ namespace HUDProject
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(" Error - XPAdded Variable Does not equal a Positive Number");
                 Console.ResetColor();
+                return;
             }
-            else
+            XP += XPAdded;
+            Console.WriteLine(" Player gained (" + XPAdded + ") XP");
+
+            while (XP >= XPToNextLevelUp)
             {
-                XP += XPAdded;
-                Console.WriteLine(" Player gained (" + XPAdded + ") XP");
+                Level += 1;
+                MaxHealth += HealthIncreaseOnLvl;
+                Health = MaxHealth;
+                MaxShield += ShieldIncreaseOnLvl;
+                Shield = MaxShield;
+                XP -= XPToNextLevelUp;
+                NumberOfTimesLeveled += 1;
+            }
 
-                while (XP >= XPToNextLevelUp)
-                {
-                    Level += 1;
-                    MaxHealth += HealthIncreaseOnLvl;
-                    Health = MaxHealth;
-                    MaxShield += ShieldIncreaseOnLvl;
-                    Shield = MaxShield;
-                    XP -= XPToNextLevelUp;
-                    NumberOfTimesLeveled += 1;
-                }
-
-                if (NumberOfTimesLeveled > 0)
-                {
-                    Console.WriteLine(" Player gained (" + NumberOfTimesLeveled + ") Levels");
-                    Console.WriteLine(" Player gained (" + (NumberOfTimesLeveled * HealthIncreaseOnLvl) + ") Max Health");
-                    Console.WriteLine(" Player gained (" + (NumberOfTimesLeveled * ShieldIncreaseOnLvl) + ") Max Shield");
-                    Console.WriteLine(" Player's Health and Shield are set to Max");
-                }
-                    
+            if (NumberOfTimesLeveled > 0)
+            {
+                Console.WriteLine(" Player gained (" + NumberOfTimesLeveled + ") Levels");
+                Console.WriteLine(" Player gained (" + (NumberOfTimesLeveled * HealthIncreaseOnLvl) + ") Max Health");
+                Console.WriteLine(" Player gained (" + (NumberOfTimesLeveled * ShieldIncreaseOnLvl) + ") Max Shield");
+                Console.WriteLine(" Player's Health and Shield are set to Max");
             }
         }
 
@@ -477,26 +466,26 @@ namespace HUDProject
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(" Error - AddedLives Variable Does not equal a Positive Number");
                 Console.ResetColor();
+                return;
+            }
+
+            TempLives = Lives;
+            Lives += AddedLives;
+            if (Lives >= MaxLives)
+            {
+                TempLives = MaxLives - TempLives;
+                Lives = MaxLives;
+                Console.WriteLine(" Player Gained (" + TempLives + ") Lives");
             }
             else
             {
-                TempLives = Lives;
-                Lives += AddedLives;
-                if (Lives >= MaxLives)
-                {
-                    TempLives = MaxLives - TempLives;
-                    Lives = MaxLives;
-                    Console.WriteLine(" Player Gained (" + TempLives + ") Lives");
-                }
-                else
-                {
-                    Console.WriteLine(" Player Gained (" + AddedLives + ") Lives");
-                }
+                Console.WriteLine(" Player Gained (" + AddedLives + ") Lives");
             }
+
         }
 
         //Sets the Health Status to different Strings based on Health
-        static void HealthStatusSet()
+        static void SetHealthStatus()
         {
             if (Health == MaxHealth)
             {
