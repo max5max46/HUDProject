@@ -32,22 +32,44 @@ namespace HUDProject
         static int[] AmmoMax = new int[7];
         static string[] Weapons = new string[7];
 
+        //OverWorld Movement
+        static int x = 0;
+        static int y = 0;
+        static bool gameOver = false;
+
         static void Main(string[] args)
         {
-            ResetGame();
+            //ResetGame();
 
-            bool YourStuck = true;
+            bool YourStuck = false;
             int MakeItStop = 43;
-
-
             
+
+
+            while (gameOver == false)
+            {
+                PlayerDraw();
+                PlayerUpdate();
+            }
+
+
+
+
+
+
+
+
+
+
+
+
 
             //Testing
             while (YourStuck == true)
 
             {
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("\n Hello Test Subject (" + MakeItStop + ")\n Let have Some Fun Today (:\n Testing Mode Active\n Loading Normal Play...\n");
+                Console.WriteLine("\n Hello Test Subject (" + MakeItStop + ")\n Lets have Some Fun Today (:\n Testing Mode Active\n Loading Normal Play...\n");
                 Console.ResetColor();
                 Console.ReadKey(true);
 
@@ -556,6 +578,39 @@ namespace HUDProject
                 Ammo[CurrentWeapon] = AmmoMax[CurrentWeapon];
             }
 
+        }
+        static void PlayerUpdate()
+        {
+            ConsoleKeyInfo keyInfo;
+            keyInfo = Console.ReadKey(true);
+
+            if (keyInfo.KeyChar == 's' && y < Console.WindowHeight -2)
+                y++;
+            if (keyInfo.KeyChar == 'w' && y > 0)
+                y--;
+            if (keyInfo.KeyChar == 'a' && x > 0)
+                x--;
+            if (keyInfo.KeyChar == 'd' && x < Console.WindowWidth -2)
+                x++;
+
+            if(keyInfo.Key == ConsoleKey.Escape)
+            {
+                gameOver = true;
+            }
+
+            if (x > Console.WindowWidth)
+                x = Console.WindowWidth -2;
+
+            if (y > Console.WindowHeight)
+                y = Console.WindowHeight -2;
+
+        }
+
+        static void PlayerDraw()
+        {
+            Console.Clear();
+            Console.SetCursorPosition(x, y);
+            Console.Write("O");
         }
     }
 }
