@@ -72,14 +72,102 @@ namespace HUDProject
                 {'`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`'},
             };
             
-            for(int x = 0; x < 12; x++)
+            for(int y = 0; y < 12; y++)
             {
-                for (int y = 0; y < 30; y++)
+                for (int x = 0; x < 30; x++)
                 {
-                    Console.SetCursorPosition(y + 1, x + 1);
-                    Console.Write(map[x, y]);
+                    Console.SetCursorPosition(x + 1, y + 1);
+                    Console.Write(map[y, x]);
                 }
             }
+            Console.ReadKey(true);
+            Console.Clear();
+
+
+
+            int scale = 3;
+
+            for (int y = 0; y < 12; y++)
+            {
+                for (int x = 0; x < 30; x++)
+                {
+                    for(int b = 0; b < scale; b++)
+                    {
+                        for (int h = 0; h < scale; h++)
+                        {
+                            Console.SetCursorPosition((x * scale)+ b + 1, (y * scale) + h + 1);
+                            Console.Write(map[y, x]);
+                        }
+                    }
+                }
+            }
+
+            Console.ReadKey(true);
+            Console.Clear();
+
+
+            char[,] TempMap = new char[map.GetLength(0) * scale, map.GetLength(1) * scale];
+
+            for (int y = 0; y < map.GetLength(0); y++)
+            {
+                for (int x = 0; x < map.GetLength(1); x++)
+                {
+                    for (int h = 0; h < scale; h++)
+                    {
+                        for (int b = 0; b < scale; b++)
+                        {
+                            TempMap[(y * scale) + h, (x * scale) + b] = map[y, x];
+                        }
+                    }
+                }
+            }
+
+            Console.ReadKey(true);
+            Console.Clear();
+
+            for (int y = 0; y < TempMap.GetLength(0); y++)
+            {
+                for (int x = 0; x < TempMap.GetLength(1); x++)
+                {
+                    Console.SetCursorPosition(x + 1, y + 1);
+                    Console.Write(TempMap[y, x]);
+                }
+            }
+
+
+            Console.ReadKey(true);
+            Console.Clear();
+
+
+            for (int borderY = 0; borderY < map.GetLength(0) + 2; borderY++)
+            {
+                for (int borderX = 0; borderX < map.GetLength(1) + 2; borderX++)
+                {
+                    if(borderY == 0 || borderX == 0 || borderY == map.GetLength(0) + 1 || borderX == map.GetLength(1) + 1)
+                    {
+                        if ((borderY == 0 && borderX == 0) || (borderY == map.GetLength(0) + 1 && borderX == 0) || (borderY == 0 && borderX == map.GetLength(1) + 1) || (borderY == map.GetLength(0) + 1 && borderX == map.GetLength(1) + 1))
+                        {
+                            Console.SetCursorPosition(borderX, borderY);
+                            Console.Write("@");
+                        }
+                        else
+                        {
+                            if (borderY == 0 || borderY == map.GetLength(0) + 1)
+                            {
+                                Console.Write("-");
+                            }
+                            else
+                            {
+                                Console.Write("|");
+                            }
+                        }
+
+                    }
+                }
+            }
+
+
+
             Console.ReadKey(true);
 
 
