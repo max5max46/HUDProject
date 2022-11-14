@@ -85,7 +85,7 @@ namespace HUDProject
 
 
 
-            int scale = 3;
+            int scale = 2;
 
             for (int y = 0; y < 12; y++)
             {
@@ -136,29 +136,30 @@ namespace HUDProject
 
 
             Console.ReadKey(true);
-            Console.Clear();
 
 
-            for (int borderY = 0; borderY < map.GetLength(0) + 2; borderY++)
+            for (int borderY = 0; borderY < TempMap.GetLength(0) + 2; borderY++)
             {
-                for (int borderX = 0; borderX < map.GetLength(1) + 2; borderX++)
+                for (int borderX = 0; borderX < TempMap.GetLength(1) + 2; borderX++)
                 {
-                    if(borderY == 0 || borderX == 0 || borderY == map.GetLength(0) + 1 || borderX == map.GetLength(1) + 1)
+                    if(borderY == 0 || borderX == 0 || borderY == TempMap.GetLength(0) + 1 || borderX == TempMap.GetLength(1) + 1)
                     {
-                        if ((borderY == 0 && borderX == 0) || (borderY == map.GetLength(0) + 1 && borderX == 0) || (borderY == 0 && borderX == map.GetLength(1) + 1) || (borderY == map.GetLength(0) + 1 && borderX == map.GetLength(1) + 1))
+                        if ((borderY == 0 && borderX == 0) || (borderY == TempMap.GetLength(0) + 1 && borderX == 0) || (borderY == 0 && borderX == TempMap.GetLength(1) + 1) || (borderY == TempMap.GetLength(0) + 1 && borderX == TempMap.GetLength(1) + 1))
                         {
                             Console.SetCursorPosition(borderX, borderY);
                             Console.Write("@");
                         }
                         else
                         {
-                            if (borderY == 0 || borderY == map.GetLength(0) + 1)
+                            if (borderY == 0 || borderY == TempMap.GetLength(0) + 1)
                             {
-                                Console.Write("-");
+                                Console.SetCursorPosition(borderX, borderY);
+                                Console.Write("─");
                             }
                             else
                             {
-                                Console.Write("|");
+                                Console.SetCursorPosition(borderX, borderY);
+                                Console.Write("│");
                             }
                         }
 
