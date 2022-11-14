@@ -9,54 +9,35 @@ namespace HUDProject
     internal class Program
     {
         //Heath/Shield System varibles
-        static int Health;
-        static int Shield;
-        static int MaxHealth;
-        static int MaxShield;
-        static string HealthStatus;
+        static int health;
+        static int shield;
+        static int maxHealth;
+        static int maxShield;
+        static string healthStatus;
 
         //Lives System varibles
-        static int Lives;
-        static int MaxLives;
+        static int lives;
+        static int maxLives;
 
         //Level up System varibles
-        static int Level;
+        static int level;
         static int XP;
         static int XPToNextLevelUp;
-        static int HealthIncreaseOnLvl;
-        static int ShieldIncreaseOnLvl;
+        static int healthIncreaseOnLvl;
+        static int shieldIncreaseOnLvl;
 
         //Weapon Arrays and Ints
-        static int CurrentWeapon;
-        static int[] Ammo = new int[7];
-        static int[] AmmoMax = new int[7];
-        static string[] Weapons = new string[7];
+        static int currentWeapon;
+        static int[] ammo = new int[7];
+        static int[] ammoMax = new int[7];
+        static string[] weapons = new string[7];
 
         //OverWorld Movement
         static int x = 0;
         static int y = 0;
         static bool gameOver = false;
 
-        static void Main(string[] args)
-        {
-            //ResetGame();
-
-            bool YourStuck = false;
-            int MakeItStop = 43;
-            
-
-
-            //while (gameOver == false)
-            //{
-                //PlayerDraw();
-                //PlayerUpdate();
-            //}
-
-
-            
-
-
-            char[,] map = new char[,] // dimensions defined by following data:
+        static char[,] unscaledMap = new char[,] // dimensions defined by following data:
             {
                 {'^','^','^','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`'},
                 {'^','^','`','`','`','`','*','*','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','~','~','~','`','`','`'},
@@ -71,122 +52,42 @@ namespace HUDProject
                 {'`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`'},
                 {'`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`'},
             };
+
+        static char[,] map;
+
+        static void Main(string[] args)
+        {
+            //ResetGame();
+
+            bool yourStuck = false;
+            int makeItStop = 43;
+
+
+            //while (gameOver == false)
+            //{
+            //PlayerDraw();
+            //PlayerUpdate();
+            //}
             
-            for(int y = 0; y < 12; y++)
-            {
-                for (int x = 0; x < 30; x++)
-                {
-                    Console.SetCursorPosition(x + 1, y + 1);
-                    Console.Write(map[y, x]);
-                }
-            }
-            Console.ReadKey(true);
-            Console.Clear();
+            Console.WindowHeight = Console.LargestWindowHeight;
+            Console.WindowWidth = Console.LargestWindowWidth;
+            Console.SetWindowPosition(0, 0);
 
-
-
+            Console.CursorVisible = false;
             int scale = 2;
 
-            for (int y = 0; y < 12; y++)
-            {
-                for (int x = 0; x < 30; x++)
-                {
-                    for(int b = 0; b < scale; b++)
-                    {
-                        for (int h = 0; h < scale; h++)
-                        {
-                            Console.SetCursorPosition((x * scale)+ b + 1, (y * scale) + h + 1);
-                            Console.Write(map[y, x]);
-                        }
-                    }
-                }
-            }
-
+            ScaleMap(scale);
             Console.ReadKey(true);
-            Console.Clear();
-
-
-            char[,] TempMap = new char[map.GetLength(0) * scale, map.GetLength(1) * scale];
-
-            for (int y = 0; y < map.GetLength(0); y++)
-            {
-                for (int x = 0; x < map.GetLength(1); x++)
-                {
-                    for (int h = 0; h < scale; h++)
-                    {
-                        for (int b = 0; b < scale; b++)
-                        {
-                            TempMap[(y * scale) + h, (x * scale) + b] = map[y, x];
-                        }
-                    }
-                }
-            }
-
+            DisplayMap();
             Console.ReadKey(true);
-            Console.Clear();
-
-            for (int y = 0; y < TempMap.GetLength(0); y++)
-            {
-                for (int x = 0; x < TempMap.GetLength(1); x++)
-                {
-                    Console.SetCursorPosition(x + 1, y + 1);
-                    Console.Write(TempMap[y, x]);
-                }
-            }
-
-
-            Console.ReadKey(true);
-
-
-            for (int borderY = 0; borderY < TempMap.GetLength(0) + 2; borderY++)
-            {
-                for (int borderX = 0; borderX < TempMap.GetLength(1) + 2; borderX++)
-                {
-                    if(borderY == 0 || borderX == 0 || borderY == TempMap.GetLength(0) + 1 || borderX == TempMap.GetLength(1) + 1)
-                    {
-                        if ((borderY == 0 && borderX == 0) || (borderY == TempMap.GetLength(0) + 1 && borderX == 0) || (borderY == 0 && borderX == TempMap.GetLength(1) + 1) || (borderY == TempMap.GetLength(0) + 1 && borderX == TempMap.GetLength(1) + 1))
-                        {
-                            Console.SetCursorPosition(borderX, borderY);
-                            Console.Write("@");
-                        }
-                        else
-                        {
-                            if (borderY == 0 || borderY == TempMap.GetLength(0) + 1)
-                            {
-                                Console.SetCursorPosition(borderX, borderY);
-                                Console.Write("─");
-                            }
-                            else
-                            {
-                                Console.SetCursorPosition(borderX, borderY);
-                                Console.Write("│");
-                            }
-                        }
-
-                    }
-                }
-            }
-
-
-
-            Console.ReadKey(true);
-
-
-            while (gameOver == false)
-            {
-                PlayerDraw();
-                PlayerUpdate();
-            }
-
-
 
 
             //Testing
-            while (YourStuck == true)
+            while (yourStuck == true)
 
             {
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("\n Hello Test Subject (" + MakeItStop + ")\n Lets have Some Fun Today (:\n Testing Mode Active\n Loading Normal Play...\n");
+                Console.WriteLine("\n Hello Test Subject (" + makeItStop + ")\n Lets have Some Fun Today (:\n Testing Mode Active\n Loading Normal Play...\n");
                 Console.ResetColor();
                 Console.ReadKey(true);
 
@@ -276,7 +177,7 @@ namespace HUDProject
                 Console.ReadKey(true);
 
                 Console.WriteLine("\n Switch to Shot gun\n");
-                CurrentWeapon = 1;
+                currentWeapon = 1;
 
                 ShowHUD();
                 Console.ReadKey(true);
@@ -292,7 +193,7 @@ namespace HUDProject
                 Console.ReadKey(true);
 
                 Console.WriteLine("\n Switch to Minigun\n");
-                CurrentWeapon = 3;
+                currentWeapon = 3;
 
                 ShowHUD();
                 Console.ReadKey(true);
@@ -386,7 +287,7 @@ namespace HUDProject
                 Console.ResetColor();
                 Console.ReadKey(true);
                 Console.Clear();
-                MakeItStop += 1;
+                makeItStop += 1;
             }
         }
 
@@ -395,48 +296,48 @@ namespace HUDProject
         {
             SetHealthStatus();
             Console.WriteLine("\n #-------------------------------------------------------------------------------#");
-            Console.WriteLine("  Lives: " + Lives + "   Level: " + Level + "   XP: " + XP + "   XP to Next Level: " + (XPToNextLevelUp - XP));
+            Console.WriteLine("  Lives: " + lives + "   Level: " + level + "   XP: " + XP + "   XP to Next Level: " + (XPToNextLevelUp - XP));
             Console.WriteLine(" #-------------------------------------------------------------------------------#");
-            Console.WriteLine("  Health: " + Health + "  Shield:  " + Shield + "  Ammo:  " + Ammo[CurrentWeapon] + "/" + AmmoMax[CurrentWeapon]);
+            Console.WriteLine("  Health: " + health + "  Shield:  " + shield + "  Ammo:  " + ammo[currentWeapon] + "/" + ammoMax[currentWeapon]);
             Console.WriteLine(" #-------------------------------------------------------------------------------#");
-            Console.WriteLine(" " + HealthStatus + "       Current Weapon: " + Weapons[CurrentWeapon]);
+            Console.WriteLine(" " + healthStatus + "       Current Weapon: " + weapons[currentWeapon]);
             Console.WriteLine(" #-------------------------------------------------------------------------------#\n");
         }
 
         //Takes Shield, Health, and Lives Away Based on Inputed Value Also handles Game Over
-        static void TakeDamage(int DamageAmount)
+        static void TakeDamage(int damageAmount)
         {
-            int TempDamage;
-            Console.WriteLine(" Player is about to take (" + DamageAmount + ") Damage");
-            if (DamageAmount < 0)
+            int tempDamage;
+            Console.WriteLine(" Player is about to take (" + damageAmount + ") Damage");
+            if (damageAmount < 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(" Error - DamageAmount Variable Does not equal a Positive Number");
                 Console.ResetColor();
                 return;
             }
-            TempDamage = DamageAmount - Shield;
+            tempDamage = damageAmount - shield;
 
-            Shield = Shield - DamageAmount;
+            shield = shield - damageAmount;
 
-            if (Shield <= 0)
+            if (shield <= 0)
             {
-                Shield = 0;
+                shield = 0;
 
-                if (TempDamage > 0) Health = Health - TempDamage;
+                if (tempDamage > 0) health = health - tempDamage;
             }
 
-            Console.WriteLine(" Player Took (" + DamageAmount + ") Damage");
+            Console.WriteLine(" Player Took (" + damageAmount + ") Damage");
 
-            if (Health <= 0)
+            if (health <= 0)
             {
-                Health = MaxHealth;
-                Lives = Lives - 1;
+                health = maxHealth;
+                lives = lives - 1;
 
-                if (Lives != 0)
+                if (lives != 0)
                 {
-                    Health = MaxHealth;
-                    Shield = MaxShield;
+                    health = maxHealth;
+                    shield = maxShield;
                     Console.WriteLine(" Player Lost a Live (-1)");
                     Console.WriteLine(" Player's Health and Shield are reset to Max");
                 }
@@ -452,64 +353,64 @@ namespace HUDProject
         }
 
         // Heals your Health Based on Inputed Value
-        static void Heal(int HealAmount)
+        static void Heal(int healAmount)
         {
-            int TempHealth;
-            Console.WriteLine(" Player is about to Heal (" + HealAmount + ") Health");
+            int tempHealth;
+            Console.WriteLine(" Player is about to Heal (" + healAmount + ") Health");
 
-            if (HealAmount < 0)
+            if (healAmount < 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(" Error - HealAmount Variable Does not equal a Positive Number");
                 Console.ResetColor();
                 return;
             }
-            TempHealth = Health;
-            Health = Health + HealAmount;
-            if (Health >= MaxHealth)
+            tempHealth = health;
+            health = health + healAmount;
+            if (health >= maxHealth)
             {
-                TempHealth = MaxHealth - TempHealth;
-                Health = MaxHealth;
-                Console.WriteLine(" Player Healed (" + TempHealth + ") Health");
+                tempHealth = maxHealth - tempHealth;
+                health = maxHealth;
+                Console.WriteLine(" Player Healed (" + tempHealth + ") Health");
             }
             else
             {
-                Console.WriteLine(" Player Healed (" + HealAmount + ") Health");
+                Console.WriteLine(" Player Healed (" + healAmount + ") Health");
             }
 
         }
 
         // Regenerates your Shield Based on Inputed Value
-        static void RegenerateShield(int RegenShieldAmount)
+        static void RegenerateShield(int regenShieldAmount)
         {
-            int TempShield;
-            Console.WriteLine(" Player is about to Regenerate (" + RegenShieldAmount + ") Shield");
+            int tempShield;
+            Console.WriteLine(" Player is about to Regenerate (" + regenShieldAmount + ") Shield");
 
-            if (RegenShieldAmount < 0)
+            if (regenShieldAmount < 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(" Error - RegenShieldAmount Variable Does not equal a Positive Number");
                 Console.ResetColor();
                 return;
             }
-            TempShield = Shield;
-            Shield = Shield + RegenShieldAmount;
-            if (Shield >= MaxShield)
+            tempShield = shield;
+            shield = shield + regenShieldAmount;
+            if (shield >= maxShield)
             {
-                TempShield = MaxShield - TempShield;
-                Shield = MaxShield;
-                Console.WriteLine(" Player Regenerated (" + TempShield + ") Shield");
+                tempShield = maxShield - tempShield;
+                shield = maxShield;
+                Console.WriteLine(" Player Regenerated (" + tempShield + ") Shield");
             }
             else
             {
-                Console.WriteLine(" Player Regenerated (" + RegenShieldAmount + ") Shield");
+                Console.WriteLine(" Player Regenerated (" + regenShieldAmount + ") Shield");
             }
         }
 
         //Handles XP Gaining and Level ups
         static void AddXPLevelUp(int XPAdded)
         {
-            int NumberOfTimesLeveled = 0;
+            int numberOfTimesLeveled = 0;
             Console.WriteLine(" Player is about to Receive (" + XPAdded + ") XP");
 
             if (XPAdded < 0)
@@ -524,20 +425,20 @@ namespace HUDProject
 
             while (XP >= XPToNextLevelUp)
             {
-                Level += 1;
-                MaxHealth += HealthIncreaseOnLvl;
-                Health = MaxHealth;
-                MaxShield += ShieldIncreaseOnLvl;
-                Shield = MaxShield;
+                level += 1;
+                maxHealth += healthIncreaseOnLvl;
+                health = maxHealth;
+                maxShield += shieldIncreaseOnLvl;
+                shield = maxShield;
                 XP -= XPToNextLevelUp;
-                NumberOfTimesLeveled += 1;
+                numberOfTimesLeveled += 1;
             }
 
-            if (NumberOfTimesLeveled > 0)
+            if (numberOfTimesLeveled > 0)
             {
-                Console.WriteLine(" Player gained (" + NumberOfTimesLeveled + ") Levels");
-                Console.WriteLine(" Player gained (" + (NumberOfTimesLeveled * HealthIncreaseOnLvl) + ") Max Health");
-                Console.WriteLine(" Player gained (" + (NumberOfTimesLeveled * ShieldIncreaseOnLvl) + ") Max Shield");
+                Console.WriteLine(" Player gained (" + numberOfTimesLeveled + ") Levels");
+                Console.WriteLine(" Player gained (" + (numberOfTimesLeveled * healthIncreaseOnLvl) + ") Max Health");
+                Console.WriteLine(" Player gained (" + (numberOfTimesLeveled * shieldIncreaseOnLvl) + ") Max Shield");
                 Console.WriteLine(" Player's Health and Shield are set to Max");
             }
         }
@@ -550,55 +451,55 @@ namespace HUDProject
 
             //Variables
 
-            MaxHealth = 100;
-            MaxShield = 100;
-            Health = MaxHealth;
-            Shield = MaxShield;
+            maxHealth = 100;
+            maxShield = 100;
+            health = maxHealth;
+            shield = maxShield;
 
-            Lives = 3;
-            MaxLives = 99;
+            lives = 3;
+            maxLives = 99;
 
-            Level = 1;
+            level = 1;
             XP = 0;
             XPToNextLevelUp = 100;
-            HealthIncreaseOnLvl = 20;
-            ShieldIncreaseOnLvl = 20;
+            healthIncreaseOnLvl = 20;
+            shieldIncreaseOnLvl = 20;
 
-            CurrentWeapon = 0;
+            currentWeapon = 0;
 
             //Array Setup
-            Weapons[0] = "Sword";
-            Weapons[1] = "Double Barrel Shotgun";
-            Weapons[2] = "Rail Spike Launcher";
-            Weapons[3] = "Minigun";
-            Weapons[4] = "Dart Pistol";
-            Weapons[5] = "Crossbow";
+            weapons[0] = "Sword";
+            weapons[1] = "Double Barrel Shotgun";
+            weapons[2] = "Rail Spike Launcher";
+            weapons[3] = "Minigun";
+            weapons[4] = "Dart Pistol";
+            weapons[5] = "Crossbow";
 
-            AmmoMax[0] = 0;
-            AmmoMax[1] = 2;
-            AmmoMax[2] = 4;
-            AmmoMax[3] = 200;
-            AmmoMax[4] = 7;
-            AmmoMax[5] = 15;
+            ammoMax[0] = 0;
+            ammoMax[1] = 2;
+            ammoMax[2] = 4;
+            ammoMax[3] = 200;
+            ammoMax[4] = 7;
+            ammoMax[5] = 15;
 
-            Ammo[0] = AmmoMax[0];
-            Ammo[1] = AmmoMax[1];
-            Ammo[2] = AmmoMax[2];
-            Ammo[3] = AmmoMax[3];
-            Ammo[4] = AmmoMax[4];
-            Ammo[5] = AmmoMax[5];
+            ammo[0] = ammoMax[0];
+            ammo[1] = ammoMax[1];
+            ammo[2] = ammoMax[2];
+            ammo[3] = ammoMax[3];
+            ammo[4] = ammoMax[4];
+            ammo[5] = ammoMax[5];
 
             Console.WriteLine(" Player Stats are Successfully Reset");
             Console.ResetColor();
         }
 
         //Adds Lives Based on inputed Value
-        static void AddLives(int AddedLives)
+        static void AddLives(int addedLives)
         {
-            int TempLives;
-            Console.WriteLine(" Player is about to Receive (" + AddedLives + ") Lives");
+            int tempLives;
+            Console.WriteLine(" Player is about to Receive (" + addedLives + ") Lives");
 
-            if (AddedLives < 0)
+            if (addedLives < 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(" Error - AddedLives Variable Does not equal a Positive Number");
@@ -606,17 +507,17 @@ namespace HUDProject
                 return;
             }
 
-            TempLives = Lives;
-            Lives += AddedLives;
-            if (Lives >= MaxLives)
+            tempLives = lives;
+            lives += addedLives;
+            if (lives >= maxLives)
             {
-                TempLives = MaxLives - TempLives;
-                Lives = MaxLives;
-                Console.WriteLine(" Player Gained (" + TempLives + ") Lives");
+                tempLives = maxLives - tempLives;
+                lives = maxLives;
+                Console.WriteLine(" Player Gained (" + tempLives + ") Lives");
             }
             else
             {
-                Console.WriteLine(" Player Gained (" + AddedLives + ") Lives");
+                Console.WriteLine(" Player Gained (" + addedLives + ") Lives");
             }
 
         }
@@ -624,75 +525,73 @@ namespace HUDProject
         //Sets the Health Status to different Strings based on Health
         static void SetHealthStatus()
         {
-            if (Health == MaxHealth)
+            if (health == maxHealth)
             {
-                HealthStatus = " You're in Perfect Health";
+                healthStatus = " You're in Perfect Health";
             }
 
-            if (Health < MaxHealth && (int)Math.Round(MaxHealth * 0.75) <= Health)
+            if (health < maxHealth && (int)Math.Round(maxHealth * 0.75) <= health)
             {
-                HealthStatus = " You're feeling Fine";
+                healthStatus = " You're feeling Fine";
             }
 
-            if ((int)Math.Round(MaxHealth * 0.75) > Health && (int)Math.Round(MaxHealth * 0.5) <= Health)
+            if ((int)Math.Round(maxHealth * 0.75) > health && (int)Math.Round(maxHealth * 0.5) <= health)
             {
-                HealthStatus = " You're Hurt";
+                healthStatus = " You're Hurt";
             }
 
-            if ((int)Math.Round(MaxHealth * 0.5) > Health && (int)Math.Round(MaxHealth * 0.25) <= Health)
+            if ((int)Math.Round(maxHealth * 0.5) > health && (int)Math.Round(maxHealth * 0.25) <= health)
             {
-                HealthStatus = " You're Barely Standing";
+                healthStatus = " You're Barely Standing";
             }
 
-            if ((int)Math.Round(MaxHealth * 0.25) > Health && MaxHealth + 1 <= Health)
+            if ((int)Math.Round(maxHealth * 0.25) > health && maxHealth + 1 <= health)
             {
-                HealthStatus =  " You're Life Hangs in the Balance";
+                healthStatus =  " You're Life Hangs in the Balance";
             }
         }
 
         static void Fire()
         {
-            
-
-            if (Weapons[CurrentWeapon] == "Sword")
+            if (weapons[currentWeapon] == "Sword")
             {
-                Console.WriteLine(" Player Swings The (" + Weapons[CurrentWeapon] + ")");
+                Console.WriteLine(" Player Swings The (" + weapons[currentWeapon] + ")");
                 return;
             }
 
-            Console.WriteLine(" Player is about to Shoot The (" + Weapons[CurrentWeapon] + ")");
+            Console.WriteLine(" Player is about to Shoot The (" + weapons[currentWeapon] + ")");
 
-            if (Ammo[CurrentWeapon] <= 0)
+            if (ammo[currentWeapon] <= 0)
             {
-                Ammo[CurrentWeapon] = 0;
-                Console.WriteLine(" Player Could not fire the (" + Weapons[CurrentWeapon] + ") It has no Ammo");
+                ammo[currentWeapon] = 0;
+                Console.WriteLine(" Player Could not fire the (" + weapons[currentWeapon] + ") It has no Ammo");
             }
             else
             {
-                Ammo[CurrentWeapon] -= 1;
-                Console.WriteLine(" Player Fired The (" + Weapons[CurrentWeapon] + ") Losing 1 Ammo");
+                ammo[currentWeapon] -= 1;
+                Console.WriteLine(" Player Fired The (" + weapons[currentWeapon] + ") Losing 1 Ammo");
             }
 
 
         }
         static void Reload()
         {
-            if (Weapons[CurrentWeapon] == Weapons[0])
+            if (weapons[currentWeapon] == weapons[0])
             {
-                Console.WriteLine(" Player Can't seem to Reload a (" + Weapons[CurrentWeapon] + ")");
+                Console.WriteLine(" Player Can't seem to Reload a (" + weapons[currentWeapon] + ")");
                 return;
             }
 
-            Console.WriteLine(" Player is about to Reload The (" + Weapons[CurrentWeapon] + ")");
+            Console.WriteLine(" Player is about to Reload The (" + weapons[currentWeapon] + ")");
 
-            if (Ammo[CurrentWeapon] == AmmoMax[CurrentWeapon])
+            if (ammo[currentWeapon] == ammoMax[currentWeapon])
             {
                 Console.WriteLine(" Player Can't Reload a Full Clip");
             }
             else
             {
-                Console.WriteLine(" Player Reloads The (" + Weapons[CurrentWeapon] + ") for (" + (AmmoMax[CurrentWeapon] - Ammo[CurrentWeapon]) + ")");
-                Ammo[CurrentWeapon] = AmmoMax[CurrentWeapon];
+                Console.WriteLine(" Player Reloads The (" + weapons[currentWeapon] + ") for (" + (ammoMax[currentWeapon] - ammo[currentWeapon]) + ")");
+                ammo[currentWeapon] = ammoMax[currentWeapon];
             }
 
         }
@@ -729,5 +628,77 @@ namespace HUDProject
             Console.SetCursorPosition(x, y);
             Console.Write("O");
         }
+
+        static void ScaleMap(int scale)
+        {
+            //Sets Dimensions for (map)
+            map = new char[unscaledMap.GetLength(0) * scale, unscaledMap.GetLength(1) * scale];
+
+            //Adds Scaled Characters to New Matrix (map)
+            for (int y = 0; y < unscaledMap.GetLength(0); y++)
+            {
+                for (int x = 0; x < unscaledMap.GetLength(1); x++)
+                {
+                    for (int h = 0; h < scale; h++)
+                    {
+                        for (int b = 0; b < scale; b++)
+                        {
+                            map[(y * scale) + h, (x * scale) + b] = unscaledMap[y, x];
+                        }
+                    }
+                }
+            }
+        }
+
+
+        static void DisplayMap()
+        {
+            //Displays Map
+            for (int y = 0; y < map.GetLength(0); y++)
+            {
+                for (int x = 0; x < map.GetLength(1); x++)
+                {
+                    Console.SetCursorPosition(x + 1, y + 1);
+                    Console.Write(map[y, x]);
+                }
+            }
+
+            //Add Map Border
+            for (int borderY = 0; borderY < map.GetLength(0) + 2; borderY++)
+            {
+                for (int borderX = 0; borderX < map.GetLength(1) + 2; borderX++)
+                {
+                    if (borderY == 0 || borderX == 0 || borderY == map.GetLength(0) + 1 || borderX == map.GetLength(1) + 1)
+                    {
+                        if ((borderY == 0 && borderX == 0) || (borderY == map.GetLength(0) + 1 && borderX == 0) || (borderY == 0 && borderX == map.GetLength(1) + 1) || (borderY == map.GetLength(0) + 1 && borderX == map.GetLength(1) + 1))
+                        {
+                            Console.SetCursorPosition(borderX, borderY);
+                            Console.Write("@");
+                        }
+                        else
+                        {
+                            if (borderY == 0 || borderY == map.GetLength(0) + 1)
+                            {
+                                Console.SetCursorPosition(borderX, borderY);
+                                Console.Write("─");
+                            }
+                            else
+                            {
+                                Console.SetCursorPosition(borderX, borderY);
+                                Console.Write("│");
+                            }
+                        }
+                    }
+                }
+            }
+
+
+
+        }
+
+
+
+
+
     }
 }
