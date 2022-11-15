@@ -33,8 +33,10 @@ namespace HUDProject
         static string[] weapons = new string[7];
 
         //OverWorld Movement
-        static int x = 0;
-        static int y = 0;
+        static int tempPlayerX;
+        static int tempPlayerY;
+        static int playerX = 7;
+        static int playerY = 7;
         static bool gameOver = false;
 
         static char[,] unscaledMap = new char[,] // dimensions defined by following data:
@@ -62,17 +64,6 @@ namespace HUDProject
             bool yourStuck = false;
             int makeItStop = 43;
 
-
-            //while (gameOver == false)
-            //{
-            //PlayerDraw();
-            //PlayerUpdate();
-            //}
-            
-            Console.WindowHeight = Console.LargestWindowHeight;
-            Console.WindowWidth = Console.LargestWindowWidth;
-            Console.SetWindowPosition(0, 0);
-
             Console.CursorVisible = false;
             int scale = 2;
 
@@ -81,6 +72,17 @@ namespace HUDProject
             DisplayMap();
             Console.ReadKey(true);
 
+            tempPlayerX = playerX;
+            tempPlayerY = playerY;
+
+
+
+
+            while (gameOver == false)
+            {
+                PlayerDraw();
+                PlayerUpdate();
+            }
 
             //Testing
             while (yourStuck == true)
@@ -551,6 +553,7 @@ namespace HUDProject
             }
         }
 
+        //Fire Current Weapon
         static void Fire()
         {
             if (weapons[currentWeapon] == "Sword")
@@ -574,6 +577,8 @@ namespace HUDProject
 
 
         }
+
+        //Reload Current Weapon
         static void Reload()
         {
             if (weapons[currentWeapon] == weapons[0])
@@ -595,38 +600,49 @@ namespace HUDProject
             }
 
         }
+
+        //Player Update Position Based on inputs
         static void PlayerUpdate()
         {
             ConsoleKeyInfo keyInfo;
             keyInfo = Console.ReadKey(true);
 
-            if (keyInfo.KeyChar == 's' && y < Console.WindowHeight -2)
-                y++;
-            if (keyInfo.KeyChar == 'w' && y > 0)
-                y--;
-            if (keyInfo.KeyChar == 'a' && x > 0)
-                x--;
-            if (keyInfo.KeyChar == 'd' && x < Console.WindowWidth -2)
-                x++;
+            tempPlayerX = playerX;
+            tempPlayerY = playerY;
+
+            if (keyInfo.KeyChar == 's' && playerY < map.GetLength(0))
+                playerY++;
+            if (keyInfo.KeyChar == 'w' && playerY > 1)
+                playerY--;
+            if (keyInfo.KeyChar == 'a' && playerX > 1)
+                playerX--;
+            if (keyInfo.KeyChar == 'd' && playerX < map.GetLength(1))
+                playerX++;
+
+            if (map[playerY - 1,playerX - 1] == '^' || map[playerY - 1, playerX - 1] == '~')
+            {
+                playerX = tempPlayerX;
+                playerY = tempPlayerY;
+            }
+
 
             if(keyInfo.Key == ConsoleKey.Escape)
             {
                 gameOver = true;
             }
-
-            if (x > Console.WindowWidth)
-                x = Console.WindowWidth -2;
-
-            if (y > Console.WindowHeight)
-                y = Console.WindowHeight -2;
-
         }
 
         static void PlayerDraw()
         {
-            Console.Clear();
-            Console.SetCursorPosition(x, y);
+            Console.SetCursorPosition(tempPlayerX, tempPlayerY);
+            SetBackgroundColor(tempPlayerY - 1, tempPlayerX - 1);
+            Console.Write(map[tempPlayerY - 1, tempPlayerX - 1]);
+            Console.ResetColor();
+
+            Console.SetCursorPosition(playerX, playerY);
+            SetBackgroundColor(playerY - 1, playerX - 1);
             Console.Write("O");
+            Console.ResetColor();
         }
 
         static void ScaleMap(int scale)
@@ -659,7 +675,9 @@ namespace HUDProject
                 for (int x = 0; x < map.GetLength(1); x++)
                 {
                     Console.SetCursorPosition(x + 1, y + 1);
+                    SetBackgroundColor(y, x);
                     Console.Write(map[y, x]);
+                    Console.ResetColor();
                 }
             }
 
@@ -696,7 +714,29 @@ namespace HUDProject
 
         }
 
+        static void SetBackgroundColor(int y, int x)
+        {
+            
+            switch (map[y, x])
+            {
+                case '`':
+                    Console.BackgroundColor = ConsoleColor.Green;
+                    break;
 
+                case '~':
+                    Console.BackgroundColor = ConsoleColor.Blue;
+                    break;
+
+                case '^':
+                    Console.BackgroundColor = ConsoleColor.DarkGray;
+                    break;
+
+                case '*':
+                    Console.BackgroundColor = ConsoleColor.DarkGreen;
+                    break;
+
+            }
+        }
 
 
 
