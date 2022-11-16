@@ -28,9 +28,9 @@ namespace HUDProject
 
         //Weapon Arrays and Ints
         static int currentWeapon;
-        static int[] ammo = new int[7];
-        static int[] ammoMax = new int[7];
-        static string[] weapons = new string[7];
+        static int[] ammo = new int[5];
+        static int[] ammoMax = new int[5];
+        static string[] weapons = new string[5];
 
         //OverWorld Movement
         static int tempPlayerX;
@@ -59,7 +59,11 @@ namespace HUDProject
 
         static void Main(string[] args)
         {
-            //ResetGame();
+            Console.WindowHeight = 35;
+            Console.WindowWidth = 99;
+
+
+            ResetGame();
 
 
             Console.CursorVisible = false;
@@ -74,6 +78,8 @@ namespace HUDProject
             tempPlayerY = playerY;
 
             ShowHUD(true);
+            SetHealthStatus();
+            DisplayText(healthStatus);
 
 
             while (gameOver == false)
@@ -99,25 +105,26 @@ namespace HUDProject
             int thirdWindowPositionX = 65;
             int thirdWindowPositionY = 27;
 
+            //Draws UI Boxes
             if (resetUI == true)
             {
-                
+                //Fisrt Window
                 Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY);
                 //             ....|....|....|....|....|....|....|
                 Console.Write("@──────────────────────────────@"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 1);
                 Console.Write("│ Level:                       │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 2);
                 Console.Write("│                              │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 3);
-                Console.Write("│ HP:    /       SP:    /      │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 4);
+                Console.Write("│ HP:           SP:            │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 4);
                 Console.Write("│                              │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 5);
-                Console.Write("│ XP:            XP to Lvl:    │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 6);
+                Console.Write("│ XP:           XP to Lvl:     │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 6);
                 Console.Write("│                              │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 7);
-                Console.Write("│ Weapons:       Ammo:         │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 8);
-                Console.Write("│ -                            │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 9);
-                Console.Write("│ -                            │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 10);
-                Console.Write("│ -                            │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 11);
-                Console.Write("│ -                            │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 12);
-                Console.Write("│ -                            │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 13);
-                Console.Write("│ -                            │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 14);
+                Console.Write("│ Weapons:      Ammo:          │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 8);
+                Console.Write("│                              │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 9);
+                Console.Write("│                              │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 10);
+                Console.Write("│                              │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 11);
+                Console.Write("│                              │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 12);
+                Console.Write("│                              │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 13);
+                Console.Write("│                              │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 14);
                 Console.Write("│                              │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 15);
                 Console.Write("│                              │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 16);
                 Console.Write("│                              │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 17);
@@ -131,16 +138,18 @@ namespace HUDProject
                 Console.Write("│                              │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 25);
                 Console.Write("@──────────────────────────────@");
 
+                //Second Window
                 Console.SetCursorPosition(secondWindowPositionX, secondWindowPositionY);
                 //             ....|....|....|....|....|....|....|....|....|....|....|....|....|
                 Console.Write("@────────────────────────────────────────────────────────────@"); Console.SetCursorPosition(secondWindowPositionX, secondWindowPositionY + 1);
                 Console.Write("│                                                            │"); Console.SetCursorPosition(secondWindowPositionX, secondWindowPositionY + 2);
                 Console.Write("│                                                            │"); Console.SetCursorPosition(secondWindowPositionX, secondWindowPositionY + 3);
-                Console.Write("│                                                            │"); Console.SetCursorPosition(secondWindowPositionX, secondWindowPositionY + 4);
+                Console.Write("│           dsadasdadadsasdasd                               │"); Console.SetCursorPosition(secondWindowPositionX, secondWindowPositionY + 4);
                 Console.Write("│                                                            │"); Console.SetCursorPosition(secondWindowPositionX, secondWindowPositionY + 5);
                 Console.Write("│                                                            │"); Console.SetCursorPosition(secondWindowPositionX, secondWindowPositionY + 6);
                 Console.Write("@────────────────────────────────────────────────────────────@");
 
+                //Third Window
                 Console.SetCursorPosition(thirdWindowPositionX, thirdWindowPositionY);
                 //             ....|....|....|....|....|....|....|
                 Console.Write("@──────────────────────────────@"); Console.SetCursorPosition(thirdWindowPositionX, thirdWindowPositionY + 1);
@@ -152,7 +161,78 @@ namespace HUDProject
                 Console.Write("@──────────────────────────────@");
             }
 
-            Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY);
+            //First Window
+            {
+                //Display Level
+                Console.SetCursorPosition(firstWindowPositionX + 9, firstWindowPositionY + 1);
+                Console.Write(level);
+
+
+                //Display health
+                Console.SetCursorPosition(firstWindowPositionX + 6, firstWindowPositionY + 3);
+                Console.Write(health + "/" + maxHealth);
+
+
+                //Display shield
+                Console.SetCursorPosition(firstWindowPositionX + 20, firstWindowPositionY + 3);
+                Console.Write(shield + "/" + maxShield);
+
+
+                //Display XP
+                Console.SetCursorPosition(firstWindowPositionX + 6, firstWindowPositionY + 5);
+                Console.Write(XP);
+
+
+                //Display XP to level
+                Console.SetCursorPosition(firstWindowPositionX + 27, firstWindowPositionY + 5);
+                Console.Write(XPToNextLevelUp - XP);
+
+
+                //Display Weapon 1
+                Console.SetCursorPosition(firstWindowPositionX + 2, firstWindowPositionY + 8);
+                Console.Write("-");
+
+                if (currentWeapon == 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.BackgroundColor = ConsoleColor.Gray;
+                }
+
+                Console.Write(weapons[0]);
+                Console.ResetColor();
+
+
+                //Display Ammo 1
+                Console.SetCursorPosition(firstWindowPositionX + 16, firstWindowPositionY + 8);
+
+                if (ammoMax[0] != 0)
+                    Console.Write(ammo[0] + "/" + ammoMax[0]);
+                else
+                    Console.Write("-/-");
+
+
+                //Display Weapon 2
+                Console.SetCursorPosition(firstWindowPositionX + 2, firstWindowPositionY + 9);
+                Console.Write("-");
+
+                if (currentWeapon == 1)
+                {
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.BackgroundColor = ConsoleColor.Gray;
+                }
+
+                Console.Write(weapons[1]);
+                Console.ResetColor();
+
+
+                //Display Ammo 2
+                Console.SetCursorPosition(firstWindowPositionX + 16, firstWindowPositionY + 9);
+                if (ammoMax[1] != 0)
+                    Console.Write(ammo[1] + "/" + ammoMax[1]);
+                else
+                    Console.Write("-/-");
+
+            }
 
 
 
@@ -314,8 +394,8 @@ namespace HUDProject
 
             //Variables
 
-            maxHealth = 100;
-            maxShield = 100;
+            maxHealth = 10;
+            maxShield = 5;
             health = maxHealth;
             shield = maxShield;
 
@@ -325,32 +405,32 @@ namespace HUDProject
             level = 1;
             XP = 0;
             XPToNextLevelUp = 100;
-            healthIncreaseOnLvl = 20;
-            shieldIncreaseOnLvl = 20;
+            healthIncreaseOnLvl = 2;
+            shieldIncreaseOnLvl = 1;
 
             currentWeapon = 0;
 
             //Array Setup
             weapons[0] = "Sword";
-            weapons[1] = "Double Barrel Shotgun";
-            weapons[2] = "Rail Spike Launcher";
+            weapons[1] = "Shotgun";
+            weapons[2] = "Crossbow";
             weapons[3] = "Minigun";
             weapons[4] = "Dart Pistol";
-            weapons[5] = "Crossbow";
+            
 
             ammoMax[0] = 0;
             ammoMax[1] = 2;
-            ammoMax[2] = 4;
+            ammoMax[2] = 5;
             ammoMax[3] = 200;
-            ammoMax[4] = 7;
-            ammoMax[5] = 15;
+            ammoMax[4] = 11;
+            
 
             ammo[0] = ammoMax[0];
             ammo[1] = ammoMax[1];
             ammo[2] = ammoMax[2];
             ammo[3] = ammoMax[3];
             ammo[4] = ammoMax[4];
-            ammo[5] = ammoMax[5];
+            
 
             Console.WriteLine(" Player Stats are Successfully Reset");
             Console.ResetColor();
@@ -486,11 +566,28 @@ namespace HUDProject
                 playerY = tempPlayerY;
             }
 
-
-            if(keyInfo.Key == ConsoleKey.Escape)
+            if (keyInfo.Key == ConsoleKey.Escape)
             {
                 gameOver = true;
             }
+
+            if (keyInfo.KeyChar == 'e' && currentWeapon != 1)
+            {
+                currentWeapon++;
+                ShowHUD(false);
+            }
+                
+            if (keyInfo.KeyChar == 'q' && currentWeapon != 0)
+            {
+                currentWeapon--;
+                ShowHUD(false);
+            }
+
+            if (keyInfo.KeyChar == 'f')
+            {
+                DisplayText("A random sentence that exceeds sixty characters But likes Men To. A random sentence that exceeds sixty characters But likess Men To.");
+            }
+
         }
 
         static void PlayerDraw()
@@ -501,8 +598,9 @@ namespace HUDProject
             Console.ResetColor();
 
             Console.SetCursorPosition(playerX, playerY);
-            SetBackgroundColor(playerY - 1, playerX - 2);
-            Console.Write("O");
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.Write("A");
             Console.ResetColor();
         }
 
@@ -599,7 +697,58 @@ namespace HUDProject
             }
         }
 
+        static void DisplayText(string textToDisplay)
+        {
+            
+            for (int j = 28; j <= 32; j++)
+            {
+                for(int i = 2; i <= 61; i++)
+                {
+                    Console.SetCursorPosition(i, j);
+                    Console.Write(' ');
+                }
+            }
 
+            Console.SetCursorPosition(3, 28);
+            int lineOne = textToDisplay.Length;
+            int lineTwo = textToDisplay.Length;
+
+            if (textToDisplay.Length > 57) 
+            {
+                for (int i = 57; i >= 0; i--)
+                {
+                    if (textToDisplay[i] == ' ')
+                    {
+                        lineOne = i;
+                        i = 1;
+                    }
+                }
+            }
+
+            if (textToDisplay.Length > 115)
+            {
+                for (int i = 57 + lineOne; i >= 0; i--)
+                {
+                    if (textToDisplay[i] == ' ')
+                    {
+                        lineTwo = i;
+                        i = 1;
+                    }
+                }
+            }
+
+            Console.Write(textToDisplay.Substring(0,lineOne)); 
+            
+            Console.SetCursorPosition(3, 29);
+
+            if (textToDisplay.Length > 57)
+                Console.Write(textToDisplay.Substring(lineOne + 1, lineTwo - lineOne - 1));
+
+            Console.SetCursorPosition(3, 30);
+
+            if (textToDisplay.Length > 115)
+                Console.Write(textToDisplay.Substring(lineTwo + 1, textToDisplay.Length - lineTwo - 1));
+        }
 
     }
 }
