@@ -61,8 +61,6 @@ namespace HUDProject
         {
             //ResetGame();
 
-            bool yourStuck = false;
-            int makeItStop = 43;
 
             Console.CursorVisible = false;
             int scale = 2;
@@ -75,7 +73,7 @@ namespace HUDProject
             tempPlayerX = playerX;
             tempPlayerY = playerY;
 
-
+            ShowHUD(true);
 
 
             while (gameOver == false)
@@ -83,227 +81,90 @@ namespace HUDProject
                 PlayerDraw();
                 PlayerUpdate();
             }
-
-            //Testing
-            while (yourStuck == true)
-
-            {
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("\n Hello Test Subject (" + makeItStop + ")\n Lets have Some Fun Today (:\n Testing Mode Active\n Loading Normal Play...\n");
-                Console.ResetColor();
-                Console.ReadKey(true);
-
-                ShowHUD();
-                Console.ReadKey(true);
-                TakeDamage(120);
-                Console.ReadKey(true);
-
-                ShowHUD();
-                Console.ReadKey(true);
-                Heal(14);
-                Console.ReadKey(true);
-
-                ShowHUD();
-                Console.ReadKey(true);
-                RegenerateShield(250);
-                Console.ReadKey(true);
-
-                ShowHUD();
-                Console.ReadKey(true);
-                AddLives(1);
-                Console.ReadKey(true);
-
-                ShowHUD();
-                Console.ReadKey(true);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("\n Lets say an Enemy Has Died\n We may now Add XP\n");
-                Console.ResetColor();
-                Console.ReadKey(true);
-
-                AddXPLevelUp(46);
-                Console.ReadKey(true);
-
-                ShowHUD();
-                Console.ReadKey(true);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("\n We have Some XP\n Lets Hit " + XPToNextLevelUp + "\n");
-                Console.ResetColor();
-                Console.ReadKey(true);
-
-                AddXPLevelUp(XPToNextLevelUp - 46);
-                Console.ReadKey(true);
-
-                ShowHUD();
-                Console.ReadKey(true);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("\n Perfect\n Now Lets Prompt Some Errors \n");
-                Console.ResetColor();
-                Console.ReadKey(true);
-
-                TakeDamage(-10);
-                Console.ReadKey(true);
-
-                ShowHUD();
-                Console.ReadKey(true);
-                Heal(-99);
-                Console.ReadKey(true);
-
-                ShowHUD();
-                Console.ReadKey(true);
-                RegenerateShield(-145);
-                Console.ReadKey(true);
-
-                ShowHUD();
-                Console.ReadKey(true);
-                AddLives(-45);
-                Console.ReadKey(true);
-
-                ShowHUD();
-                Console.ReadKey(true);
-                AddXPLevelUp(-1000);
-                Console.ReadKey(true);
-
-
-                ShowHUD();
-                Console.ReadKey(true);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("\n Cool now we Test Weapons\n BABY!!!!!!! \n");
-                Console.ResetColor();
-                Console.ReadKey(true);
-
-                Fire();
-                Console.ReadKey(true);
-                Reload();
-                Console.ReadKey(true);
-                ShowHUD();
-                Console.ReadKey(true);
-
-                Console.WriteLine("\n Switch to Shot gun\n");
-                currentWeapon = 1;
-
-                ShowHUD();
-                Console.ReadKey(true);
-                Fire();
-                Fire();
-                Fire();
-                Console.ReadKey(true);
-                ShowHUD();
-                Console.ReadKey(true);
-                Reload();
-                Console.ReadKey(true);
-                ShowHUD();
-                Console.ReadKey(true);
-
-                Console.WriteLine("\n Switch to Minigun\n");
-                currentWeapon = 3;
-
-                ShowHUD();
-                Console.ReadKey(true);
-                Reload();
-                ShowHUD();
-                Console.ReadKey(true);
-                Fire();
-                Fire();
-                Fire();
-                Console.ReadKey(true);
-                ShowHUD();
-                Console.ReadKey(true);
-                Reload();
-                Console.ReadKey(true);
-                ShowHUD();
-                Console.ReadKey(true);
-
-
-                ShowHUD();
-                Console.ReadKey(true);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("\n Good\n Now Lets Test Variable Ranges \n");
-                Console.ResetColor();
-                Console.ReadKey(true);
-
-                Heal(200);
-                Console.ReadKey(true);
-
-                ShowHUD();
-                Console.ReadKey(true);
-                RegenerateShield(366);
-                Console.ReadKey(true);
-
-                ShowHUD();
-                Console.ReadKey(true);
-                AddLives(100);
-                Console.ReadKey(true);
-
-                ShowHUD();
-                Console.ReadKey(true);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("\n Almost Done\n Lets Overload XP \n");
-                Console.ResetColor();
-                Console.ReadKey(true);
-
-                AddXPLevelUp(1000);
-                Console.ReadKey(true);
-
-                ShowHUD();
-                Console.ReadKey(true);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("\n Very Good\n Time for the Last Section \n Reseting Stats...");
-                Console.ResetColor();
-                Console.ReadKey(true);
-
-                ResetGame();
-                Console.ReadKey(true);
-
-                ShowHUD();
-                Console.ReadKey(true);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("\n Now For My Favorite Part\n Overloading Damage\n");
-                Console.ResetColor();
-                Console.ReadKey(true);
-
-                TakeDamage(200);
-                Console.ReadKey(true);
-
-                ShowHUD();
-                Console.ReadKey(true);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("\n Thank You for Your Cooperation\n");
-                Console.ResetColor();
-                Console.ReadKey(true);
-
-                TakeDamage(200);
-                Console.ReadKey(true);
-
-                ShowHUD();
-                Console.ReadKey(true);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("\n Goodbye (:\n");
-                Console.ResetColor();
-                Console.ReadKey(true);
-
-                TakeDamage(200);
-                Console.ReadKey(true);
-
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("\n Initializing Next Test\n");
-                Console.ResetColor();
-                Console.ReadKey(true);
-                Console.Clear();
-                makeItStop += 1;
-            }
+            
         }
 
         //Displays the HUD
-        static void ShowHUD()
+        static void ShowHUD(bool resetUI)
         {
-            SetHealthStatus();
-            Console.WriteLine("\n #-------------------------------------------------------------------------------#");
-            Console.WriteLine("  Lives: " + lives + "   Level: " + level + "   XP: " + XP + "   XP to Next Level: " + (XPToNextLevelUp - XP));
-            Console.WriteLine(" #-------------------------------------------------------------------------------#");
-            Console.WriteLine("  Health: " + health + "  Shield:  " + shield + "  Ammo:  " + ammo[currentWeapon] + "/" + ammoMax[currentWeapon]);
-            Console.WriteLine(" #-------------------------------------------------------------------------------#");
-            Console.WriteLine(" " + healthStatus + "       Current Weapon: " + weapons[currentWeapon]);
-            Console.WriteLine(" #-------------------------------------------------------------------------------#\n");
+            //SetHealthStatus();
+
+            //Variable set up
+            int firstWindowPositionX = 65;
+            int firstWindowPositionY = 0;
+
+            int secondWindowPositionX = 1;
+            int secondWindowPositionY = 27;
+
+            int thirdWindowPositionX = 65;
+            int thirdWindowPositionY = 27;
+
+            if (resetUI == true)
+            {
+                
+                Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY);
+                //             ....|....|....|....|....|....|....|
+                Console.Write("@──────────────────────────────@"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 1);
+                Console.Write("│ Level:                       │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 2);
+                Console.Write("│                              │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 3);
+                Console.Write("│ HP:    /       SP:    /      │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 4);
+                Console.Write("│                              │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 5);
+                Console.Write("│ XP:            XP to Lvl:    │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 6);
+                Console.Write("│                              │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 7);
+                Console.Write("│ Weapons:       Ammo:         │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 8);
+                Console.Write("│ -                            │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 9);
+                Console.Write("│ -                            │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 10);
+                Console.Write("│ -                            │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 11);
+                Console.Write("│ -                            │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 12);
+                Console.Write("│ -                            │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 13);
+                Console.Write("│ -                            │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 14);
+                Console.Write("│                              │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 15);
+                Console.Write("│                              │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 16);
+                Console.Write("│                              │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 17);
+                Console.Write("│                              │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 18);
+                Console.Write("│                              │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 19);
+                Console.Write("│                              │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 20);
+                Console.Write("│                              │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 21);
+                Console.Write("│                              │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 22);
+                Console.Write("│                              │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 23);
+                Console.Write("│                              │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 24);
+                Console.Write("│                              │"); Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY + 25);
+                Console.Write("@──────────────────────────────@");
+
+                Console.SetCursorPosition(secondWindowPositionX, secondWindowPositionY);
+                //             ....|....|....|....|....|....|....|....|....|....|....|....|....|
+                Console.Write("@────────────────────────────────────────────────────────────@"); Console.SetCursorPosition(secondWindowPositionX, secondWindowPositionY + 1);
+                Console.Write("│                                                            │"); Console.SetCursorPosition(secondWindowPositionX, secondWindowPositionY + 2);
+                Console.Write("│                                                            │"); Console.SetCursorPosition(secondWindowPositionX, secondWindowPositionY + 3);
+                Console.Write("│                                                            │"); Console.SetCursorPosition(secondWindowPositionX, secondWindowPositionY + 4);
+                Console.Write("│                                                            │"); Console.SetCursorPosition(secondWindowPositionX, secondWindowPositionY + 5);
+                Console.Write("│                                                            │"); Console.SetCursorPosition(secondWindowPositionX, secondWindowPositionY + 6);
+                Console.Write("@────────────────────────────────────────────────────────────@");
+
+                Console.SetCursorPosition(thirdWindowPositionX, thirdWindowPositionY);
+                //             ....|....|....|....|....|....|....|
+                Console.Write("@──────────────────────────────@"); Console.SetCursorPosition(thirdWindowPositionX, thirdWindowPositionY + 1);
+                Console.Write("│                              │"); Console.SetCursorPosition(thirdWindowPositionX, thirdWindowPositionY + 2);
+                Console.Write("│                              │"); Console.SetCursorPosition(thirdWindowPositionX, thirdWindowPositionY + 3);
+                Console.Write("│                              │"); Console.SetCursorPosition(thirdWindowPositionX, thirdWindowPositionY + 4);
+                Console.Write("│                              │"); Console.SetCursorPosition(thirdWindowPositionX, thirdWindowPositionY + 5);
+                Console.Write("│                              │"); Console.SetCursorPosition(thirdWindowPositionX, thirdWindowPositionY + 6);
+                Console.Write("@──────────────────────────────@");
+            }
+
+            Console.SetCursorPosition(firstWindowPositionX, firstWindowPositionY);
+
+
+
+
+
+            //Console.Write("@────────────────────────────────────────────────────────────@");
+            //Console.Write("│ Lives: " + lives + "   Level: " + level + "   XP: " + XP + "   XP to Next Level: " + (XPToNextLevelUp - XP));
+            //Console.Write("│#-------------------------------------------------------------------------------#");
+            //Console.Write("│ Health: " + health + "  Shield:  " + shield + "  Ammo:  " + ammo[currentWeapon] + "/" + ammoMax[currentWeapon]);
+            //Console.Write("│#-------------------------------------------------------------------------------#");
+            //Console.Write("│" + healthStatus + "       Current Weapon: " + weapons[currentWeapon]);
+            //Console.Write("@────────────────────────────────────────────────────────────@");
         }
 
         //Takes Shield, Health, and Lives Away Based on Inputed Value Also handles Game Over
@@ -614,12 +475,12 @@ namespace HUDProject
                 playerY++;
             if (keyInfo.KeyChar == 'w' && playerY > 1)
                 playerY--;
-            if (keyInfo.KeyChar == 'a' && playerX > 1)
+            if (keyInfo.KeyChar == 'a' && playerX > 2)
                 playerX--;
-            if (keyInfo.KeyChar == 'd' && playerX < map.GetLength(1))
+            if (keyInfo.KeyChar == 'd' && playerX < map.GetLength(1) + 1)
                 playerX++;
 
-            if (map[playerY - 1,playerX - 1] == '^' || map[playerY - 1, playerX - 1] == '~')
+            if (map[playerY - 1,playerX - 2] == '^' || map[playerY - 1, playerX - 2] == '~')
             {
                 playerX = tempPlayerX;
                 playerY = tempPlayerY;
@@ -635,12 +496,12 @@ namespace HUDProject
         static void PlayerDraw()
         {
             Console.SetCursorPosition(tempPlayerX, tempPlayerY);
-            SetBackgroundColor(tempPlayerY - 1, tempPlayerX - 1);
-            Console.Write(map[tempPlayerY - 1, tempPlayerX - 1]);
+            SetBackgroundColor(tempPlayerY - 1, tempPlayerX - 2);
+            Console.Write(map[tempPlayerY - 1, tempPlayerX - 2]);
             Console.ResetColor();
 
             Console.SetCursorPosition(playerX, playerY);
-            SetBackgroundColor(playerY - 1, playerX - 1);
+            SetBackgroundColor(playerY - 1, playerX - 2);
             Console.Write("O");
             Console.ResetColor();
         }
@@ -674,7 +535,7 @@ namespace HUDProject
             {
                 for (int x = 0; x < map.GetLength(1); x++)
                 {
-                    Console.SetCursorPosition(x + 1, y + 1);
+                    Console.SetCursorPosition(x + 2, y + 1);
                     SetBackgroundColor(y, x);
                     Console.Write(map[y, x]);
                     Console.ResetColor();
@@ -684,11 +545,11 @@ namespace HUDProject
             //Add Map Border
             for (int borderY = 0; borderY < map.GetLength(0) + 2; borderY++)
             {
-                for (int borderX = 0; borderX < map.GetLength(1) + 2; borderX++)
+                for (int borderX = 1; borderX < map.GetLength(1) + 3; borderX++)
                 {
-                    if (borderY == 0 || borderX == 0 || borderY == map.GetLength(0) + 1 || borderX == map.GetLength(1) + 1)
+                    if (borderY == 0 || borderX == 1 || borderY == map.GetLength(0) + 1 || borderX == map.GetLength(1) + 2)
                     {
-                        if ((borderY == 0 && borderX == 0) || (borderY == map.GetLength(0) + 1 && borderX == 0) || (borderY == 0 && borderX == map.GetLength(1) + 1) || (borderY == map.GetLength(0) + 1 && borderX == map.GetLength(1) + 1))
+                        if ((borderY == 0 && borderX == 1) || (borderY == map.GetLength(0) + 1 && borderX == 1) || (borderY == 0 && borderX == map.GetLength(1) + 2) || (borderY == map.GetLength(0) + 1 && borderX == map.GetLength(1) + 2))
                         {
                             Console.SetCursorPosition(borderX, borderY);
                             Console.Write("@");
