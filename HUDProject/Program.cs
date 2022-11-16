@@ -59,20 +59,56 @@ namespace HUDProject
 
         static void Main(string[] args)
         {
-            Console.WindowHeight = 35;
-            Console.WindowWidth = 99;
+            int scale = 1;
 
+            Console.WriteLine("Press Any Button to Begin Test");
+
+            ConsoleKeyInfo keyInfo;
+            keyInfo = Console.ReadKey(true);
+
+            if (keyInfo.KeyChar != 'p')
+            {
+                Console.Clear();
+
+                ScaleMap(scale);
+                DisplayMap();
+                Console.ReadKey(true);
+
+                Console.Clear();
+
+                scale = 2;
+
+                ScaleMap(scale);
+                DisplayMap();
+                Console.ReadKey(true);
+
+                Console.Clear();
+
+                scale = 3;
+
+                ScaleMap(scale);
+                DisplayMap();
+                Console.ReadKey(true);
+
+            }
+
+            Console.Clear();
+            
+
+            if (Console.LargestWindowWidth > 99 || Console.LargestWindowHeight > 35)
+            {
+                Console.WindowHeight = 35;
+                Console.WindowWidth = 99;
+            }
+
+            Console.CursorVisible = false;
+
+            scale = 2;
 
             ResetGame();
 
-
-            Console.CursorVisible = false;
-            int scale = 2;
-
             ScaleMap(scale);
-            Console.ReadKey(true);
             DisplayMap();
-            Console.ReadKey(true);
 
             tempPlayerX = playerX;
             tempPlayerY = playerY;
@@ -144,7 +180,7 @@ namespace HUDProject
                 Console.Write("@────────────────────────────────────────────────────────────@"); Console.SetCursorPosition(secondWindowPositionX, secondWindowPositionY + 1);
                 Console.Write("│                                                            │"); Console.SetCursorPosition(secondWindowPositionX, secondWindowPositionY + 2);
                 Console.Write("│                                                            │"); Console.SetCursorPosition(secondWindowPositionX, secondWindowPositionY + 3);
-                Console.Write("│           dsadasdadadsasdasd                               │"); Console.SetCursorPosition(secondWindowPositionX, secondWindowPositionY + 4);
+                Console.Write("│                                                            │"); Console.SetCursorPosition(secondWindowPositionX, secondWindowPositionY + 4);
                 Console.Write("│                                                            │"); Console.SetCursorPosition(secondWindowPositionX, secondWindowPositionY + 5);
                 Console.Write("│                                                            │"); Console.SetCursorPosition(secondWindowPositionX, secondWindowPositionY + 6);
                 Console.Write("@────────────────────────────────────────────────────────────@");
@@ -389,8 +425,8 @@ namespace HUDProject
         //Resets Varibles to Base State
         static void ResetGame()
         {
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("\n Player Stats are about to Reset");
+            //Console.ForegroundColor = ConsoleColor.Yellow;
+            //Console.WriteLine("\n Player Stats are about to Reset");
 
             //Variables
 
@@ -432,8 +468,8 @@ namespace HUDProject
             ammo[4] = ammoMax[4];
             
 
-            Console.WriteLine(" Player Stats are Successfully Reset");
-            Console.ResetColor();
+            //Console.WriteLine(" Player Stats are Successfully Reset");
+            //Console.ResetColor();
         }
 
         //Adds Lives Based on inputed Value
@@ -470,27 +506,27 @@ namespace HUDProject
         {
             if (health == maxHealth)
             {
-                healthStatus = " You're in Perfect Health";
+                healthStatus = "You're in Perfect Health";
             }
 
             if (health < maxHealth && (int)Math.Round(maxHealth * 0.75) <= health)
             {
-                healthStatus = " You're feeling Fine";
+                healthStatus = "You're feeling Fine";
             }
 
             if ((int)Math.Round(maxHealth * 0.75) > health && (int)Math.Round(maxHealth * 0.5) <= health)
             {
-                healthStatus = " You're Hurt";
+                healthStatus = "You're Hurt";
             }
 
             if ((int)Math.Round(maxHealth * 0.5) > health && (int)Math.Round(maxHealth * 0.25) <= health)
             {
-                healthStatus = " You're Barely Standing";
+                healthStatus = "You're Barely Standing";
             }
 
             if ((int)Math.Round(maxHealth * 0.25) > health && maxHealth + 1 <= health)
             {
-                healthStatus =  " You're Life Hangs in the Balance";
+                healthStatus = "You're Life Hangs in the Balance";
             }
         }
 
@@ -581,11 +617,6 @@ namespace HUDProject
             {
                 currentWeapon--;
                 ShowHUD(false);
-            }
-
-            if (keyInfo.KeyChar == 'f')
-            {
-                DisplayText("A random sentence that exceeds sixty characters But likes Men To. A random sentence that exceeds sixty characters But likess Men To.");
             }
 
         }
@@ -709,9 +740,10 @@ namespace HUDProject
                 }
             }
 
-            Console.SetCursorPosition(3, 28);
             int lineOne = textToDisplay.Length;
             int lineTwo = textToDisplay.Length;
+            int lineThree = textToDisplay.Length;
+            int lineFour = textToDisplay.Length;
 
             if (textToDisplay.Length > 57) 
             {
@@ -737,6 +769,32 @@ namespace HUDProject
                 }
             }
 
+            if (textToDisplay.Length > 173)
+            {
+                for (int i = 57 + lineTwo; i >= 0; i--)
+                {
+                    if (textToDisplay[i] == ' ')
+                    {
+                        lineThree = i;
+                        i = 1;
+                    }
+                }
+            }
+
+            if (textToDisplay.Length > 231)
+            {
+                for (int i = 57 + lineThree; i >= 0; i--)
+                {
+                    if (textToDisplay[i] == ' ')
+                    {
+                        lineFour = i;
+                        i = 1;
+                    }
+                }
+            }
+
+            Console.SetCursorPosition(3, 28);
+
             Console.Write(textToDisplay.Substring(0,lineOne)); 
             
             Console.SetCursorPosition(3, 29);
@@ -747,7 +805,17 @@ namespace HUDProject
             Console.SetCursorPosition(3, 30);
 
             if (textToDisplay.Length > 115)
-                Console.Write(textToDisplay.Substring(lineTwo + 1, textToDisplay.Length - lineTwo - 1));
+                Console.Write(textToDisplay.Substring(lineTwo + 1, lineThree - lineTwo - 1));
+
+            Console.SetCursorPosition(3, 31);
+
+            if (textToDisplay.Length > 173)
+                Console.Write(textToDisplay.Substring(lineThree + 1, lineFour - lineThree - 1));
+
+            Console.SetCursorPosition(3, 32);
+
+            if (textToDisplay.Length > 231)
+                Console.Write(textToDisplay.Substring(lineFour + 1, textToDisplay.Length - lineFour - 1));
         }
 
     }
