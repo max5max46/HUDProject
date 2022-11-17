@@ -8,6 +8,8 @@ namespace HUDProject
 {
     internal class Program
     {
+        static Random RNG = new Random();
+
         //Heath/Shield System varibles
         static int health;
         static int shield;
@@ -39,6 +41,16 @@ namespace HUDProject
         static int playerY = 7;
         static bool gameOver = false;
 
+        //Battle Menu
+        static int selectedBattleOption = 0;
+        static string[] battleOptions = new string[6];
+        static int[] battleEnemies = new int[3];
+
+
+        static int BattleState = 0;
+
+
+
         static char[,] unscaledMap = new char[,] // dimensions defined by following data:
             {
                 {'^','^','^','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`'},
@@ -57,9 +69,38 @@ namespace HUDProject
 
         static char[,] map;
 
+
+
+
+        //https://www.meridianoutpost.com/resources/articles/ASCII-Extended-Code-reference-chart.php
+
+
         static void Main(string[] args)
         {
             int scale = 1;
+            int slimeX;
+            int slimeY;
+
+
+            if (Console.LargestWindowWidth > 99 || Console.LargestWindowHeight > 35)
+            {
+                Console.WindowHeight = 35;
+                Console.WindowWidth = 99;
+            }
+            Console.CursorVisible = false;
+
+            ShowHUD(true);
+            ResetGame();
+
+            while (gameOver == false)
+            {
+                BattlePlayerInput();
+                DisplayBattle();
+                if (BattleState == 2)
+                {
+
+                }
+            }
 
             Console.WriteLine("Press Any Button to Begin Test");
 
@@ -121,7 +162,7 @@ namespace HUDProject
             while (gameOver == false)
             {
                 PlayerDraw();
-                PlayerUpdate();
+                OverWorldPlayerInput();
             }
             
         }
@@ -331,6 +372,11 @@ namespace HUDProject
             }
         }
 
+        static void DealDamage(int damageAmount)
+        {
+
+        }
+
         // Heals your Health Based on Inputed Value
         static void Heal(int healAmount)
         {
@@ -452,21 +498,27 @@ namespace HUDProject
             weapons[2] = "Crossbow";
             weapons[3] = "Minigun";
             weapons[4] = "Dart Pistol";
-            
+
 
             ammoMax[0] = 0;
             ammoMax[1] = 2;
             ammoMax[2] = 5;
             ammoMax[3] = 200;
             ammoMax[4] = 11;
-            
+
 
             ammo[0] = ammoMax[0];
             ammo[1] = ammoMax[1];
             ammo[2] = ammoMax[2];
             ammo[3] = ammoMax[3];
             ammo[4] = ammoMax[4];
-            
+
+            battleOptions[0] = "Attack";
+            battleOptions[1] = "N/a";
+            battleOptions[2] = "Run";
+            battleOptions[3] = "Enemy 1";
+            battleOptions[4] = "Enemy 2";
+            battleOptions[5] = "Enemy 3";
 
             //Console.WriteLine(" Player Stats are Successfully Reset");
             //Console.ResetColor();
@@ -578,8 +630,8 @@ namespace HUDProject
 
         }
 
-        //Player Update Position Based on inputs
-        static void PlayerUpdate()
+        //Game Based on inputs
+        static void OverWorldPlayerInput()
         {
             ConsoleKeyInfo keyInfo;
             keyInfo = Console.ReadKey(true);
@@ -621,6 +673,7 @@ namespace HUDProject
 
         }
 
+        //Draws the player on the overworld
         static void PlayerDraw()
         {
             Console.SetCursorPosition(tempPlayerX, tempPlayerY);
@@ -635,6 +688,7 @@ namespace HUDProject
             Console.ResetColor();
         }
 
+        //Scales a base map to any scale and then adds a 2d Array with the contents of the scale
         static void ScaleMap(int scale)
         {
             //Sets Dimensions for (map)
@@ -656,7 +710,7 @@ namespace HUDProject
             }
         }
 
-
+        //Prints map in main UI Box
         static void DisplayMap()
         {
             //Displays Map
@@ -704,6 +758,7 @@ namespace HUDProject
 
         }
 
+        //selects Color for tiles on overworld
         static void SetBackgroundColor(int y, int x)
         {
             
@@ -728,6 +783,7 @@ namespace HUDProject
             }
         }
 
+        //Takes a String and displays it in the UI text box
         static void DisplayText(string textToDisplay)
         {
             
@@ -816,6 +872,306 @@ namespace HUDProject
 
             if (textToDisplay.Length > 231)
                 Console.Write(textToDisplay.Substring(lineFour + 1, textToDisplay.Length - lineFour - 1));
+        }
+
+
+        //Game Based on inputs
+        static void BattlePlayerInput()
+        {
+            ConsoleKeyInfo keyInfo;
+            keyInfo = Console.ReadKey(true);
+
+            if (BattleState == 0)
+            {
+                if (keyInfo.KeyChar == 'a' && selectedBattleOption != 0)
+                    selectedBattleOption--;
+                if (keyInfo.KeyChar == 'd' && selectedBattleOption != 2)
+                    selectedBattleOption++;
+
+                if (keyInfo.Key == ConsoleKey.Enter)
+                {
+                    selectedBattleOption = 4;
+                    BattleState = 1;
+                }
+            }
+
+            if (BattleState == 1)
+            {
+                if (keyInfo.KeyChar == 'a' && selectedBattleOption != 3)
+                    selectedBattleOption--;
+                if (keyInfo.KeyChar == 'd' && selectedBattleOption != 5)
+                    selectedBattleOption++;
+
+                if (keyInfo.Key == ConsoleKey.Enter)
+                {
+                    BattleState = 2;
+                }
+
+                if (keyInfo.Key == ConsoleKey.Backspace)
+                {
+                    selectedBattleOption = 0;
+                    BattleState = 0;
+                }
+            }
+
+            if (keyInfo.Key == ConsoleKey.Escape)
+            {
+                gameOver = true;
+            }
+
+            if (keyInfo.KeyChar == 'e' && currentWeapon != 1)
+            {
+                currentWeapon++;
+                ShowHUD(false);
+            }
+
+            if (keyInfo.KeyChar == 'q' && currentWeapon != 0)
+            {
+                currentWeapon--;
+                ShowHUD(false);
+            }
+
+            
+
+        }
+
+
+
+        static void DisplayBattle()
+        {
+            for (int j = 28; j <= 32; j++)
+            {
+                for (int i = 2; i <= 61; i++)
+                {
+                    Console.SetCursorPosition(i, j);
+                    Console.Write(' ');
+                }
+            }
+
+            if (BattleState == 0)
+            {
+                //Attack
+                Console.SetCursorPosition(3, 30);
+                if (selectedBattleOption == 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.BackgroundColor = ConsoleColor.Gray;
+                }
+
+                Console.Write(battleOptions[0]);
+                Console.ResetColor();
+
+                //N/a
+                Console.SetCursorPosition(15, 30);
+                if (selectedBattleOption == 1)
+                {
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.BackgroundColor = ConsoleColor.Gray;
+                }
+
+                Console.Write(battleOptions[1]);
+                Console.ResetColor();
+
+                //Run
+                Console.SetCursorPosition(27, 30);
+                if (selectedBattleOption == 2)
+                {
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.BackgroundColor = ConsoleColor.Gray;
+                }
+
+                Console.Write(battleOptions[2]);
+                Console.ResetColor();
+
+            }
+
+            if (BattleState == 1)
+            {
+                //Enemy 2
+                Console.SetCursorPosition(3, 30);
+                if (selectedBattleOption == 3)
+                {
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.BackgroundColor = ConsoleColor.Gray;
+                }
+
+                Console.Write(battleOptions[3]);
+                Console.ResetColor();
+
+                //Enemy 1
+                Console.SetCursorPosition(15, 30);
+                if (selectedBattleOption == 4)
+                {
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.BackgroundColor = ConsoleColor.Gray;
+                }
+
+                Console.Write(battleOptions[4]);
+                Console.ResetColor();
+
+                //Enemy 3
+                Console.SetCursorPosition(27, 30);
+                if (selectedBattleOption == 5)
+                {
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.BackgroundColor = ConsoleColor.Gray;
+                }
+
+                Console.Write(battleOptions[5]);
+                Console.ResetColor();
+
+            }
+
+
+
+
+
+            /*
+            //18*18
+            Console.Write("@────────────────────────────────────────────────────────────@"); 
+            Console.Write("│                                                            │"); 
+            Console.Write("│                                                            │"); 
+            Console.Write("│   	▌▐ █  ▄ ▀                                               │"); 
+            Console.Write("│                                                            │"); 
+            Console.Write("│        ▄▄▄▄▄▄▄                                             │"); 
+            Console.Write("│     ▄█▀▀     ▀▀█▄                                          │"); 
+            Console.Write("│    █▀           ▀█                                         │"); 
+            Console.Write("│    █   ▄▄   ▄▄   █                                         │"); 
+            Console.Write("│    █▄ ▄       ▄ ▄█                                         │");
+            Console.Write("│     ▀█▄▄▄▄▄▄▄▄▄█▀                                          │");
+            Console.Write("│                                                            │");
+            Console.Write("│                                                            │"); 
+            Console.Write("│                                                            │"); 
+            Console.Write("│                                                            │"); 
+            Console.Write("│                                                            │"); 
+            Console.Write("│                                                            │");
+            Console.Write("│                                                            │"); 
+            Console.Write("│                                                            │"); 
+            Console.Write("│                                                            │");
+            Console.Write("│                                                            │");
+            Console.Write("│                                                            │");
+            Console.Write("│                                                            │");
+            Console.Write("│                                                            │");
+            Console.Write("│                                                            │");
+            Console.Write("@────────────────────────────────────────────────────────────@");
+
+            Console.Write("@────────────────────────────────────────────────────────────@");
+            Console.Write("│ A Battle Rages On!                                         │");
+            Console.Write("│                                                            │");
+            Console.Write("│ Attack     Reload      Run                                 │");
+            Console.Write("│                                                            │");
+            Console.Write("│                                                            │");
+            Console.Write("@────────────────────────────────────────────────────────────@");
+
+
+            Console.Write("@────────────────────────────────────────────────────────────@");
+            Console.Write("│                                                            │");
+            Console.Write("│                                                            │");
+            Console.Write("│                                                            │");
+            Console.Write("│                                                            │");
+            Console.Write("│                                                            │");
+            Console.Write("│                                                            │");
+            Console.Write("│                                                            │");
+            Console.Write("│                                                            │");
+            Console.Write("│                                                            │");
+            Console.Write("│                                                            │");
+            Console.Write("│                                                            │");
+            Console.Write("│                                                            │");
+            Console.Write("│                                                            │");
+            Console.Write("│                                                            │");
+            Console.Write("│                                                            │");
+            Console.Write("│                                                            │");
+            Console.Write("│                                                            │");
+            Console.Write("│                                                            │");
+            Console.Write("│                                                            │");
+            Console.Write("│                                                            │");
+            Console.Write("│                                                            │");
+            Console.Write("│                                                            │");
+            Console.Write("│                                                            │");
+            Console.Write("│                                                            │");
+            Console.Write("@────────────────────────────────────────────────────────────@");
+
+            //Green Slime
+            {
+                int slimeX = 10;
+                int slimeY = 5;
+
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+
+                Console.SetCursorPosition(slimeX + 4, slimeY); Console.Write("▄▄▄▄▄▄▄");
+                Console.SetCursorPosition(slimeX + 1, slimeY + 1); Console.Write("▄           ▄");
+                Console.SetCursorPosition(slimeX + 1, slimeY + 5); Console.Write("▀           ▀");
+
+                Console.BackgroundColor = ConsoleColor.Green;
+
+                Console.SetCursorPosition(slimeX + 2, slimeY + 1); Console.Write("█▀▀     ▀▀█");
+                Console.SetCursorPosition(slimeX, slimeY + 2); Console.Write("█▀   ▄   ▄   ▀█");
+                Console.SetCursorPosition(slimeX, slimeY + 3); Console.Write("█    █   █    █");
+                Console.SetCursorPosition(slimeX, slimeY + 4); Console.Write("█▄           ▄█");
+                Console.SetCursorPosition(slimeX + 2, slimeY + 5); Console.Write("█▄▄▄▄▄▄▄▄▄█");
+
+                Console.ForegroundColor = ConsoleColor.Red;
+
+                Console.SetCursorPosition(slimeX + 2, slimeY + 4); Console.Write("▀▀       ▀▀");
+
+                Console.ResetColor();
+
+
+                slimeX = 10;
+                slimeY = 5;
+
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+
+                Console.SetCursorPosition(slimeX + 4, slimeY); Console.Write("▄▄▄▄▄▄▄");
+                Console.SetCursorPosition(slimeX + 1, slimeY + 1); Console.Write("▄           ▄");
+                Console.SetCursorPosition(slimeX + 1, slimeY + 5); Console.Write("▀           ▀");
+
+                Console.BackgroundColor = ConsoleColor.Red;
+
+                Console.SetCursorPosition(slimeX + 2, slimeY + 1); Console.Write("█▀▀     ▀▀█");
+                Console.SetCursorPosition(slimeX, slimeY + 2); Console.Write("█▀           ▀█");
+                Console.SetCursorPosition(slimeX, slimeY + 3); Console.Write("█  ▀▀▀   ▀▀▀  █");
+                Console.SetCursorPosition(slimeX, slimeY + 4); Console.Write("█▄           ▄█");
+                Console.SetCursorPosition(slimeX + 2, slimeY + 5); Console.Write("█▄▄▄▄▄▄▄▄▄█");
+
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+
+                Console.SetCursorPosition(slimeX + 2, slimeY + 4); Console.Write("▀▀       ▀▀");
+
+                Console.ResetColor();
+            
+            }
+            */
+        }
+
+        static void BattleEnemies()
+        {
+            /*
+            battleEnemies Defines if there is a Enemie in any of the three battle positions and what enemy they are
+
+
+
+            */
+
+
+            battleEnemies[0] = 1;
+            battleEnemies[1] = RNG.Next(0,1);
+            battleEnemies[2] = RNG.Next(0,1);
+
+            if (battleEnemies[0] >= 1)
+            {
+
+            }
+
+            if (battleEnemies[1] >= 1)
+            {
+
+            }
+
+            if (battleEnemies[2] >= 1)
+            {
+
+            }
         }
 
     }
