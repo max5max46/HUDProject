@@ -88,7 +88,7 @@ namespace HUDProject
                 Console.WindowWidth = 99;
             }
             Console.CursorVisible = false;
-
+            /*
             ShowHUD(true);
             ResetGame();
 
@@ -101,7 +101,7 @@ namespace HUDProject
 
                 }
             }
-
+            */
             Console.WriteLine("Press Any Button to Begin Test");
 
             ConsoleKeyInfo keyInfo;
