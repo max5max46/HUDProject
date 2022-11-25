@@ -17,10 +17,6 @@ namespace HUDProject
         static int maxShield;
         static string healthStatus;
 
-        //Lives System varibles
-        static int lives;
-        static int maxLives;
-
         //Level up System varibles
         static int level;
         static int XP;
@@ -44,7 +40,8 @@ namespace HUDProject
         //Battle Menu
         static int selectedBattleOption = 0;
         static string[] battleOptions = new string[6];
-        static int[,] battleEnemies = new int[3,10];
+        static int[,] EnemySlots = new int[3,10];
+        
 
 
         static int BattleState = 0;
@@ -55,6 +52,7 @@ namespace HUDProject
 
         //Enemies
         static int[,] Enemies = new int[10,10];
+        static string[] EnemyNames = new string[10];
 
         static char[,] map = new char[,] // dimensions defined by following data:
             {
@@ -96,7 +94,19 @@ namespace HUDProject
             int slimeY;
 
 
-            /*
+            
+            
+            
+
+            if (Console.LargestWindowWidth > 99 || Console.LargestWindowHeight > 35)
+            {
+                Console.WindowHeight = 35;
+                Console.WindowWidth = 99;
+            }
+
+            Console.CursorVisible = false;
+
+
             ShowHUD(true);
             ResetGame();
 
@@ -109,17 +119,6 @@ namespace HUDProject
 
                 }
             }
-            */
-
-            if (Console.LargestWindowWidth > 99 || Console.LargestWindowHeight > 35)
-            {
-                Console.WindowHeight = 35;
-                Console.WindowWidth = 99;
-            }
-
-            Console.CursorVisible = false;
-
-            ResetGame();
 
             DisplayMap();
 
@@ -323,24 +322,9 @@ namespace HUDProject
 
             if (health <= 0)
             {
-                health = maxHealth;
-                lives = lives - 1;
-
-                if (lives != 0)
-                {
-                    health = maxHealth;
-                    shield = maxShield;
-                    Console.WriteLine(" Player Lost a Live (-1)");
-                    Console.WriteLine(" Player's Health and Shield are reset to Max");
-                }
-                //Game Over
-                else
-                {
-                    Console.WriteLine(" Player Lives have Reached (0)");
-                    Console.WriteLine(" Game Over Has Occurred Reseting Game");
-                    ResetGame();
-                }
-
+                Console.WriteLine(" Player Lives have Reached (0)");
+                Console.WriteLine(" Game Over Has Occurred Reseting Game");
+                ResetGame();
             }
         }
 
@@ -453,9 +437,6 @@ namespace HUDProject
             health = maxHealth;
             shield = maxShield;
 
-            lives = 3;
-            maxLives = 99;
-
             level = 1;
             XP = 0;
             XPToNextLevelUp = 100;
@@ -496,47 +477,22 @@ namespace HUDProject
 
             /*Index values for speific Enemies goes as follows
 
+            Green Slimes
+
             0 - Health
             1 - Attack
 
 
 
             */
-            //Slime Index 0
+            //Green Slime Index 0
             Enemies[0, 0] = 20;
             Enemies[0, 1] = 5;
+            EnemyNames[0] = "Green Slime";
 
             //Console.WriteLine(" Player Stats are Successfully Reset");
             //Console.ResetColor();
-        }
-
-        //Adds Lives Based on inputed Value
-        static void AddLives(int addedLives)
-        {
-            int tempLives;
-            Console.WriteLine(" Player is about to Receive (" + addedLives + ") Lives");
-
-            if (addedLives < 0)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(" Error - AddedLives Variable Does not equal a Positive Number");
-                Console.ResetColor();
-                return;
-            }
-
-            tempLives = lives;
-            lives += addedLives;
-            if (lives >= maxLives)
-            {
-                tempLives = maxLives - tempLives;
-                lives = maxLives;
-                Console.WriteLine(" Player Gained (" + tempLives + ") Lives");
-            }
-            else
-            {
-                Console.WriteLine(" Player Gained (" + addedLives + ") Lives");
-            }
-
+        
         }
 
         //Sets the Health Status to different Strings based on Health
@@ -855,13 +811,21 @@ namespace HUDProject
 
                 if (keyInfo.Key == ConsoleKey.Enter)
                 {
-                    selectedBattleOption = 4;
-                    BattleState = 1;
+                    if (selectedBattleOption == 0)
+                    {
+                        selectedBattleOption = 4;
+                        BattleState = 1;
+                    }
+
+
+
+                    return;
                 }
             }
 
             if (BattleState == 1)
             {
+                
                 if (keyInfo.KeyChar == 'a' && selectedBattleOption != 3)
                     selectedBattleOption--;
                 if (keyInfo.KeyChar == 'd' && selectedBattleOption != 5)
@@ -869,13 +833,14 @@ namespace HUDProject
 
                 if (keyInfo.Key == ConsoleKey.Enter)
                 {
-                    BattleState = 2;
+                    return;
                 }
 
                 if (keyInfo.Key == ConsoleKey.Backspace)
                 {
                     selectedBattleOption = 0;
                     BattleState = 0;
+                    return;
                 }
             }
 
@@ -904,6 +869,7 @@ namespace HUDProject
 
         static void DisplayBattle()
         {
+            
             for (int j = 28; j <= 32; j++)
             {
                 for (int i = 2; i <= 61; i++)
@@ -912,6 +878,7 @@ namespace HUDProject
                     Console.Write(' ');
                 }
             }
+            
 
             if (BattleState == 0)
             {
@@ -952,6 +919,7 @@ namespace HUDProject
 
             if (BattleState == 1)
             {
+                
                 //Enemy 2
                 Console.SetCursorPosition(3, 30);
                 if (selectedBattleOption == 3)
@@ -985,6 +953,11 @@ namespace HUDProject
                 Console.Write(battleOptions[5]);
                 Console.ResetColor();
 
+            }
+
+            if (BattleState == 2)
+            {
+                DisplayText("The Player Attacks the " + EnemySlots[(selectedBattleOption - 2)] + "");
             }
 
 
@@ -1112,33 +1085,33 @@ namespace HUDProject
         static void BattleEnemies()
         {
             /*
-            battleEnemies Defines if there is a Enemie in any of the three battle positions and what enemy they are
+            battleEnemies Defines if there is a Enemy in any of the three battle positions and what enemy they are
 
 
 
             */
 
 
-            battleEnemies[0,0] = 1;
-            battleEnemies[1,0] = RNG.Next(0,1);
-            battleEnemies[2,0] = RNG.Next(0,1);
+            EnemySlots[0,0] = 1;
+            EnemySlots[1,0] = RNG.Next(0,1);
+            EnemySlots[2,0] = RNG.Next(0,1);
 
-            if (battleEnemies[0,0] >= 1)
+            if (EnemySlots[0,0] >= 1)
             {
-                battleEnemies[0, 1] = Enemies[0, 0];
-                battleEnemies[0, 2] = Enemies[0, 1];
+                EnemySlots[0, 1] = Enemies[0, 0];
+                EnemySlots[0, 2] = Enemies[0, 1];
             }
 
-            if (battleEnemies[1,0] >= 1)
+            if (EnemySlots[1,0] >= 1)
             {
-                battleEnemies[1, 1] = Enemies[0, 0];
-                battleEnemies[1, 2] = Enemies[0, 1];
+                EnemySlots[1, 1] = Enemies[0, 0];
+                EnemySlots[1, 2] = Enemies[0, 1];
             }
 
-            if (battleEnemies[2,0] >= 1)
+            if (EnemySlots[2,0] >= 1)
             {
-                battleEnemies[2, 1] = Enemies[0, 0];
-                battleEnemies[2, 2] = Enemies[0, 1];
+                EnemySlots[2, 1] = Enemies[0, 0];
+                EnemySlots[2, 2] = Enemies[0, 1];
             }
         }
 
