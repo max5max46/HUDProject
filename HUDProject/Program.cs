@@ -636,6 +636,18 @@ namespace HUDProject
 
         static void RandomizeMap()
         {
+            int numberOfSeedsTree = RNG.Next(5, 10);
+            int numberOfGenTree = RNG.Next(6, 15);
+
+            int numberOfSeedsWater = RNG.Next(0, 3);
+            int numberOfGenWater = RNG.Next(9, 16);
+
+            int numberOfSeedsMount = RNG.Next(0, 5);
+            int numberOfGenMount = RNG.Next(6, 11);
+
+            int chanceToGrowMin = 45;
+            int chanceToGrowMax = 70;
+
             int K;
             for (int i = 0; i < 60; i++)
             {
@@ -657,12 +669,12 @@ namespace HUDProject
                 }
             }
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < numberOfSeedsTree; i++)
             {
                 map[RNG.Next(0, 24), RNG.Next(0, 60)] = '*';
             }
 
-            for (int t = 0; t < 10; t++)
+            for (int t = 0; t < numberOfGenTree; t++)
             {
                 for (int i = 0; i < 60; i++)
                 {
@@ -676,7 +688,7 @@ namespace HUDProject
                             {
                                 if (map[j - 1, i] == '`')
                                 {
-                                    if (RNG.Next(1, 101) > 50)
+                                    if (RNG.Next(1, 101) < RNG.Next(chanceToGrowMin, chanceToGrowMax))
                                     {
                                         map[j - 1, i] = 'o';
                                     }
@@ -687,7 +699,7 @@ namespace HUDProject
                             {
                                 if (map[j + 1, i] == '`')
                                 {
-                                    if (RNG.Next(1, 101) > 50)
+                                    if (RNG.Next(1, 101) < RNG.Next(chanceToGrowMin, chanceToGrowMax))
                                     {
                                         map[j + 1, i] = 'o';
                                     }
@@ -698,7 +710,7 @@ namespace HUDProject
                             {
                                 if (map[j, i - 1] == '`')
                                 {
-                                    if (RNG.Next(1, 101) > 50)
+                                    if (RNG.Next(1, 101) < RNG.Next(chanceToGrowMin, chanceToGrowMax))
                                     {
                                         map[j, i - 1] = 'o';
                                     }
@@ -709,17 +721,19 @@ namespace HUDProject
                             {
                                 if (map[j, i + 1] == '`')
                                 {
-                                    if (RNG.Next(1, 101) > 50)
+                                    if (RNG.Next(1, 101) < RNG.Next(chanceToGrowMin, chanceToGrowMax))
                                     {
                                         map[j, i + 1] = 'o';
                                     }
                                 }
                             }
-
+                            
                             
                         }
                     }
                 }
+                DisplayMap();
+                Console.ReadKey(true);
                 for (int i = 0; i < 60; i++)
                 {
                     for (int j = 0; j < 24; j++)
@@ -731,8 +745,223 @@ namespace HUDProject
                     }
                 }
             }
-            
 
+
+            for (int i = 0; i < numberOfSeedsWater; i++)
+            {
+                map[RNG.Next(0, 24), RNG.Next(0, 60)] = '~';
+            }
+
+
+            for (int t = 0; t < numberOfGenWater; t++)
+            {
+                for (int i = 0; i < 60; i++)
+                {
+                    for (int j = 0; j < 24; j++)
+                    {
+                        if (map[j, i] == '~')
+                        {
+
+
+                            if ((j - 1) != -1)
+                            {
+                                if (map[j - 1, i] == '`' || map[j - 1, i] == '*')
+                                {
+                                    if (RNG.Next(1, 101) < 50)
+                                    {
+                                        map[j - 1, i] = 'o';
+                                    }
+                                }
+                            }
+
+                            if ((j + 1) != 24)
+                            {
+                                if (map[j + 1, i] == '`' || map[j + 1, i] == '*')
+                                {
+                                    if (RNG.Next(1, 101) < 50)
+                                    {
+                                        map[j + 1, i] = 'o';
+                                    }
+                                }
+                            }
+
+                            if ((i - 1) != -1)
+                            {
+                                if (map[j, i - 1] == '`' || map[j, i - 1] == '*')
+                                {
+                                    if (RNG.Next(1, 101) < 50)
+                                    {
+                                        map[j, i - 1] = 'o';
+                                    }
+                                }
+                            }
+
+                            if ((i + 1) != 60)
+                            {
+                                if (map[j, i + 1] == '`' || map[j, i + 1] == '*')
+                                {
+                                    if (RNG.Next(1, 101) < 50)
+                                    {
+                                        map[j, i + 1] = 'o';
+                                    }
+                                }
+                            }
+
+
+                        }
+                    }
+                }
+                DisplayMap();
+                Console.ReadKey(true);
+                for (int i = 0; i < 60; i++)
+                {
+                    for (int j = 0; j < 24; j++)
+                    {
+                        if (map[j, i] == 'o')
+                        {
+                            map[j, i] = '~';
+                        }
+                    }
+                }  
+            }
+
+            for (int i = 0; i < numberOfSeedsMount; i++)
+            {
+                map[RNG.Next(0, 24), RNG.Next(0, 60)] = '^';
+            }
+
+
+            for (int t = 0; t < numberOfGenMount; t++)
+            {
+                for (int i = 0; i < 60; i++)
+                {
+                    for (int j = 0; j < 24; j++)
+                    {
+                        if (map[j, i] == '^')
+                        {
+
+
+                            if ((j - 1) != -1)
+                            {
+                                if (map[j - 1, i] == '`' || map[j - 1, i] == '*')
+                                {
+                                    if (RNG.Next(1, 101) < 50)
+                                    {
+                                        map[j - 1, i] = 'o';
+                                    }
+                                }
+                            }
+
+                            if ((j + 1) != 24)
+                            {
+                                if (map[j + 1, i] == '`' || map[j + 1, i] == '*')
+                                {
+                                    if (RNG.Next(1, 101) < 50)
+                                    {
+                                        map[j + 1, i] = 'o';
+                                    }
+                                }
+                            }
+
+                            if ((i - 1) != -1)
+                            {
+                                if (map[j, i - 1] == '`' || map[j, i - 1] == '*')
+                                {
+                                    if (RNG.Next(1, 101) < 50)
+                                    {
+                                        map[j, i - 1] = 'o';
+                                    }
+                                }
+                            }
+
+                            if ((i + 1) != 60)
+                            {
+                                if (map[j, i + 1] == '`' || map[j, i + 1] == '*')
+                                {
+                                    if (RNG.Next(1, 101) < 50)
+                                    {
+                                        map[j, i + 1] = 'o';
+                                    }
+                                }
+                            }
+
+
+                        }
+                    }
+                }
+                DisplayMap();
+                Console.ReadKey(true);
+                for (int i = 0; i < 60; i++)
+                {
+                    for (int j = 0; j < 24; j++)
+                    {
+                        if (map[j, i] == 'o')
+                        {
+                            map[j, i] = '^';
+                        }
+                    }
+                }
+            }
+
+            for (int i = 0; i < 60; i++)
+            {
+                for (int j = 0; j < 24; j++)
+                {
+                    if (map[j, i] == '~')
+                    {
+
+
+                        if ((j - 1) != -1)
+                        {
+                            if (map[j - 1, i] == '`' || map[j - 1, i] == '*')
+                            {
+                                map[j - 1, i] = 'o';
+                            }
+                        }
+
+                        if ((j + 1) != 24)
+                        {
+                            if (map[j + 1, i] == '`' || map[j + 1, i] == '*')
+                            {
+                                map[j + 1, i] = 'o';
+                            }
+                        }
+
+                        if ((i - 1) != -1)
+                        {
+                            if (map[j, i - 1] == '`' || map[j, i - 1] == '*')
+                            {
+                                map[j, i - 1] = 'o';
+                            }
+                        }
+
+                        if ((i + 1) != 60)
+                        {
+                            if (map[j, i + 1] == '`' || map[j, i + 1] == '*')
+                            {
+                                map[j, i + 1] = 'o';
+                            }
+                        }
+
+
+                    }
+                }
+            }
+            DisplayMap();
+            Console.ReadKey(true);
+            for (int i = 0; i < 60; i++)
+            {
+                for (int j = 0; j < 24; j++)
+                {
+                    if (map[j, i] == 'o')
+                    {
+                        map[j, i] = '+';
+                    }
+                }
+            }
+            DisplayMap();
+            DisplayText("Tree Gens: " + numberOfGenTree.ToString() + "  Water Gens: " + numberOfGenWater + "  Tree Seeds: " + numberOfSeedsTree + "  Water Seeds: " + numberOfSeedsWater);
+            Console.ReadKey(true);
         }
 
 
@@ -804,6 +1033,10 @@ namespace HUDProject
 
                 case '*':
                     Console.BackgroundColor = ConsoleColor.DarkGreen;
+                    break;
+
+                case '+':
+                    Console.BackgroundColor = ConsoleColor.Yellow;
                     break;
 
             }
