@@ -40,19 +40,15 @@ namespace HUDProject
         //Battle Menu
         static int selectedBattleOption = 0;
         static string[] battleOptions = new string[6];
-        static int[,] EnemySlots = new int[3,10];
-        
+        static int battleState;
 
 
-        static int BattleState = 0;
-
-
-
-
+        static int[,] currentBattleEnemys = new int[3, 10];
 
         //Enemies
-        static int[,] Enemies = new int[10,10];
-        static string[] EnemyNames = new string[10];
+
+        static int[,] enemyIndex = new int[10,10];
+        static string[] enemyNames = new string[10];
 
         static char[,] map = new char[,] // dimensions defined by following data:
             {
@@ -92,11 +88,6 @@ namespace HUDProject
         {
             int slimeX;
             int slimeY;
-            
-
-            
-            
-            
 
             if (Console.LargestWindowWidth > 99 || Console.LargestWindowHeight > 35)
             {
@@ -108,6 +99,9 @@ namespace HUDProject
 
             ResetGame();
 
+            ShowHUD(true);
+
+            BattleMain();
             /*
             ShowHUD(true);
             
@@ -436,7 +430,7 @@ namespace HUDProject
 
             //Variables
 
-            maxHealth = 10;
+            maxHealth = 40;
             maxShield = 5;
             health = maxHealth;
             shield = maxShield;
@@ -489,14 +483,24 @@ namespace HUDProject
 
 
             */
-            //Green Slime Index 0
-            Enemies[0, 0] = 20;
-            Enemies[0, 1] = 5;
-            EnemyNames[0] = "Green Slime";
+            //No Enemy Index 0
+            enemyNames[0] = "none";
+            enemyIndex[0, 0] = 0;
+            enemyIndex[0, 1] = 0;
+
+            //Green Slime Index 1
+            enemyNames[1] = "Green Slime";
+            enemyIndex[1, 0] = 10;
+            enemyIndex[1, 1] = 3;
+
+            //Skeleton Index 2
+            enemyNames[2] = "Skeleton";
+            enemyIndex[2, 0] = 7;
+            enemyIndex[2, 1] = 5;
 
             //Console.WriteLine(" Player Stats are Successfully Reset");
             //Console.ResetColor();
-        
+
         }
 
         //Sets the Health Status to different Strings based on Health
@@ -654,18 +658,6 @@ namespace HUDProject
                 for (int j = 0; j < 24; j++)
                 {
                     map[j, i] = '`';
-                    /*
-                    K = RNG.Next(1, 11);
-                    
-                    if (K <= 7)
-                        map[j, i] = '`';
-                    if (K == 8)
-                        map[j, i] = '*';
-                    if (K == 9)
-                        map[j, i] = '~';
-                    if (K == 10)
-                        map[j, i] = '^';
-                    */
                 }
             }
 
@@ -1139,7 +1131,7 @@ namespace HUDProject
             ConsoleKeyInfo keyInfo;
             keyInfo = Console.ReadKey(true);
 
-            if (BattleState == 0)
+            if (battleState == 0)
             {
                 if (keyInfo.KeyChar == 'a' && selectedBattleOption != 0)
                     selectedBattleOption--;
@@ -1151,7 +1143,7 @@ namespace HUDProject
                     if (selectedBattleOption == 0)
                     {
                         selectedBattleOption = 4;
-                        BattleState = 1;
+                        battleState = 1;
                     }
 
 
@@ -1160,7 +1152,7 @@ namespace HUDProject
                 }
             }
 
-            if (BattleState == 1)
+            if (battleState == 1)
             {
                 
                 if (keyInfo.KeyChar == 'a' && selectedBattleOption != 3)
@@ -1170,13 +1162,14 @@ namespace HUDProject
 
                 if (keyInfo.Key == ConsoleKey.Enter)
                 {
+                    battleState = 2;
                     return;
                 }
 
                 if (keyInfo.Key == ConsoleKey.Backspace)
                 {
                     selectedBattleOption = 0;
-                    BattleState = 0;
+                    battleState = 0;
                     return;
                 }
             }
@@ -1202,7 +1195,7 @@ namespace HUDProject
 
         }
 
-        static void DisplayBattle()
+        static void DisplayBattle(bool willDrawEnemies)
         {
             
             for (int j = 28; j <= 32; j++)
@@ -1213,90 +1206,107 @@ namespace HUDProject
                     Console.Write(' ');
                 }
             }
-            
 
-            if (BattleState == 0)
+            //Bottom Window Draw
+
+            switch (battleState)
             {
-                //Attack
-                Console.SetCursorPosition(3, 30);
-                if (selectedBattleOption == 0)
-                {
-                    Console.ForegroundColor = ConsoleColor.Black;
-                    Console.BackgroundColor = ConsoleColor.Gray;
-                }
 
-                Console.Write(battleOptions[0]);
-                Console.ResetColor();
+                case 0:
+                    //Attack
+                    Console.SetCursorPosition(3, 30);
+                    if (selectedBattleOption == 0)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.BackgroundColor = ConsoleColor.Gray;
+                    }
 
-                //N/a
-                Console.SetCursorPosition(15, 30);
-                if (selectedBattleOption == 1)
-                {
-                    Console.ForegroundColor = ConsoleColor.Black;
-                    Console.BackgroundColor = ConsoleColor.Gray;
-                }
+                    Console.Write(battleOptions[0]);
+                    Console.ResetColor();
 
-                Console.Write(battleOptions[1]);
-                Console.ResetColor();
+                    //N/a
+                    Console.SetCursorPosition(15, 30);
+                    if (selectedBattleOption == 1)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.BackgroundColor = ConsoleColor.Gray;
+                    }
 
-                //Run
-                Console.SetCursorPosition(27, 30);
-                if (selectedBattleOption == 2)
-                {
-                    Console.ForegroundColor = ConsoleColor.Black;
-                    Console.BackgroundColor = ConsoleColor.Gray;
-                }
+                    Console.Write(battleOptions[1]);
+                    Console.ResetColor();
 
-                Console.Write(battleOptions[2]);
-                Console.ResetColor();
+                    //Run
+                    Console.SetCursorPosition(27, 30);
+                    if (selectedBattleOption == 2)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.BackgroundColor = ConsoleColor.Gray;
+                    }
 
+                    Console.Write(battleOptions[2]);
+                    Console.ResetColor();
+                    break;
+
+                case 1:
+                    //Enemy 2
+                    Console.SetCursorPosition(3, 30);
+                    if (selectedBattleOption == 3)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.BackgroundColor = ConsoleColor.Gray;
+                    }
+
+                    Console.Write(battleOptions[3]);
+                    Console.ResetColor();
+
+                    //Enemy 1
+                    Console.SetCursorPosition(15, 30);
+                    if (selectedBattleOption == 4)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.BackgroundColor = ConsoleColor.Gray;
+                    }
+
+                    Console.Write(battleOptions[4]);
+                    Console.ResetColor();
+
+                    //Enemy 3
+                    Console.SetCursorPosition(27, 30);
+                    if (selectedBattleOption == 5)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.BackgroundColor = ConsoleColor.Gray;
+                    }
+
+                    Console.Write(battleOptions[5]);
+                    Console.ResetColor();
+                    break;
+
+                case 2:
+                    DisplayText("The Player Attacks the " + "");
+                    break;
             }
 
-            if (BattleState == 1)
+            //Top Window Draw
+            if (willDrawEnemies == true)
             {
-                
-                //Enemy 2
-                Console.SetCursorPosition(3, 30);
-                if (selectedBattleOption == 3)
+                if (currentBattleEnemys[0, 0] >= 1)
                 {
-                    Console.ForegroundColor = ConsoleColor.Black;
-                    Console.BackgroundColor = ConsoleColor.Gray;
+                    Console.SetCursorPosition(3, 10);
+                    Console.Write(enemyNames[currentBattleEnemys[0, 0]]);
                 }
 
-                Console.Write(battleOptions[3]);
-                Console.ResetColor();
-
-                //Enemy 1
-                Console.SetCursorPosition(15, 30);
-                if (selectedBattleOption == 4)
+                if (currentBattleEnemys[1, 0] >= 1)
                 {
-                    Console.ForegroundColor = ConsoleColor.Black;
-                    Console.BackgroundColor = ConsoleColor.Gray;
+                    Console.SetCursorPosition(15, 10);
+                    Console.Write(enemyNames[currentBattleEnemys[1, 0]]);
                 }
-
-                Console.Write(battleOptions[4]);
-                Console.ResetColor();
-
-                //Enemy 3
-                Console.SetCursorPosition(27, 30);
-                if (selectedBattleOption == 5)
+                if (currentBattleEnemys[2, 0] >= 1)
                 {
-                    Console.ForegroundColor = ConsoleColor.Black;
-                    Console.BackgroundColor = ConsoleColor.Gray;
+                    Console.SetCursorPosition(33, 10);
+                    Console.Write(enemyNames[currentBattleEnemys[2, 0]]);
                 }
-
-                Console.Write(battleOptions[5]);
-                Console.ResetColor();
-
             }
-
-            if (BattleState == 2)
-            {
-                DisplayText("The Player Attacks the " + "");
-            }
-
-
-
 
 
             /*
@@ -1417,7 +1427,7 @@ namespace HUDProject
             */
         }
 
-        static void BattleEnemies()
+        static void GenarateBattleEnemies()
         {
             /*
             battleEnemies Defines if there is a Enemy in any of the three battle positions and what enemy they are
@@ -1426,27 +1436,87 @@ namespace HUDProject
 
             */
 
+            int EnemyIndexValue;
 
-            EnemySlots[0,0] = 1;
-            EnemySlots[1,0] = RNG.Next(0,1);
-            EnemySlots[2,0] = RNG.Next(0,1);
+            currentBattleEnemys[0,0] = 1;
+            currentBattleEnemys[1,0] = RNG.Next(0,2);
+            currentBattleEnemys[2,0] = RNG.Next(0,2);
 
-            if (EnemySlots[0,0] >= 1)
+            if (currentBattleEnemys[0,0] == 1)
             {
-                EnemySlots[0, 1] = Enemies[0, 0];
-                EnemySlots[0, 2] = Enemies[0, 1];
+                EnemyIndexValue = RNG.Next(1, 3);
+                currentBattleEnemys[0, 0] = EnemyIndexValue;
+                currentBattleEnemys[0, 1] = enemyIndex[EnemyIndexValue, 0];
+                currentBattleEnemys[0, 2] = enemyIndex[EnemyIndexValue, 1];
             }
 
-            if (EnemySlots[1,0] >= 1)
+            if (currentBattleEnemys[1,0] == 1)
             {
-                EnemySlots[1, 1] = Enemies[0, 0];
-                EnemySlots[1, 2] = Enemies[0, 1];
+                EnemyIndexValue = RNG.Next(1, 3);
+                currentBattleEnemys[1, 0] = EnemyIndexValue;
+                currentBattleEnemys[1, 1] = enemyIndex[EnemyIndexValue, 0];
+                currentBattleEnemys[1, 2] = enemyIndex[EnemyIndexValue, 1];
             }
 
-            if (EnemySlots[2,0] >= 1)
+            if (currentBattleEnemys[2,0] == 1)
             {
-                EnemySlots[2, 1] = Enemies[0, 0];
-                EnemySlots[2, 2] = Enemies[0, 1];
+                EnemyIndexValue = RNG.Next(1, 3);
+                currentBattleEnemys[2, 0] = EnemyIndexValue;
+                currentBattleEnemys[2, 1] = enemyIndex[EnemyIndexValue, 0];
+                currentBattleEnemys[2, 2] = enemyIndex[EnemyIndexValue, 1];
+            }
+        }
+
+        static void BattleMain()
+        {
+            battleState = 69;
+            GenarateBattleEnemies();
+            DisplayBattle(true);
+            DisplayText("Enemy in Positsion 1: " + enemyNames[currentBattleEnemys[0, 0]].ToString() + "   Enemy in Positsion 2: " + enemyNames[currentBattleEnemys[1, 0]] + "   Enemy in Positsion 3: " + enemyNames[currentBattleEnemys[2, 0]]);
+
+            Console.ReadKey(true);
+
+            battleState = 0;
+
+            while (gameOver == false)
+            {
+                DisplayBattle(false);
+                BattlePlayerInput();
+
+                //Attacking Phase
+                if (battleState == 2)
+                {
+                    DisplayText("Player Attacks the " + enemyNames[currentBattleEnemys[selectedBattleOption - 3, 0]] + " Dealing 3 Damage");
+                    currentBattleEnemys[selectedBattleOption - 3, 1] = currentBattleEnemys[selectedBattleOption - 3, 1] - 3;
+                    
+                    Console.ReadKey(true);
+
+                    if (currentBattleEnemys[0, 0] >= 1)
+                    {
+                        DisplayText("the " + enemyNames[currentBattleEnemys[0, 0]] + "(1) Attacks the Player Dealing " + currentBattleEnemys[0, 2] + " Damage");
+                        health = health - currentBattleEnemys[0, 2];
+                        ShowHUD(false);
+                        Console.ReadKey(true);
+                    }
+
+                    if (currentBattleEnemys[1, 0] >= 1)
+                    {
+                        DisplayText("the " + enemyNames[currentBattleEnemys[1, 0]] + "(2) Attacks the Player Dealing " + currentBattleEnemys[1, 2] + " Damage");
+                        health = health - currentBattleEnemys[1, 2];
+                        ShowHUD(false);
+                        Console.ReadKey(true);
+                    }
+
+                    if (currentBattleEnemys[2, 0] >= 1)
+                    {
+                        DisplayText("the " + enemyNames[currentBattleEnemys[2, 0]] + "(3) Attacks the Player Dealing " + currentBattleEnemys[2, 2] + " Damage");
+                        health = health - currentBattleEnemys[2, 2];
+                        ShowHUD(false);
+                        Console.ReadKey(true);
+                    }
+                    battleState = 0;
+                    selectedBattleOption = 0;
+                }
             }
         }
 
