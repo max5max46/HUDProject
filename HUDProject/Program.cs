@@ -47,6 +47,8 @@ namespace HUDProject
         static int spriteDrawX;
         static int spriteDrawY;
 
+        static bool battleOver;
+
         static string[] linesToDisplay = new string[5];
 
         static int[,] currentBattleEnemys = new int[3, 10];
@@ -111,12 +113,16 @@ namespace HUDProject
             Console.Write("│        Dylan Adams        │"); Console.SetCursorPosition(18, 9);
             Console.Write("└                           ┘");
 
-            Console.SetCursorPosition(3, 19);
-            Console.Write("Controls:"); Console.SetCursorPosition(3, 21);
-            Console.Write("Move - WASD or Arrow Keys"); Console.SetCursorPosition(3, 22);
+            Console.SetCursorPosition(3, 17);
+            Console.Write("Controls:"); Console.SetCursorPosition(3, 19);
+            Console.Write("Move - WASD or Arrow Keys"); Console.SetCursorPosition(3, 20);
+            Console.Write("Confrim - Enter/Space/Z"); Console.SetCursorPosition(3, 21);
+            Console.Write("Back - Backspace or X"); Console.SetCursorPosition(3, 22);
             Console.Write("Switch Weapon - Q and E"); Console.SetCursorPosition(3, 23);
             Console.Write("Genarate New World - R"); Console.SetCursorPosition(3, 24);
             Console.Write("Quit Game - Escape");
+
+            Console.SetCursorPosition(55, 24); Console.Write("v0.2");
 
             Console.SetCursorPosition(20, 14);
             Console.Write("Press any Button to Begin");
@@ -725,6 +731,8 @@ namespace HUDProject
             int chanceToGrowMin = 45;
             int chanceToGrowMax = 70;
 
+            bool noDisplay = false;
+
             int K;
             for (int i = 0; i < 60; i++)
             {
@@ -800,6 +808,7 @@ namespace HUDProject
                         }
                     }
                     DisplayMap();
+
                     for (int i = 0; i < 60; i++)
                     {
                         for (int j = 0; j < 24; j++)
@@ -882,6 +891,7 @@ namespace HUDProject
                             }
                         }
                     }
+
                     DisplayMap();
                     for (int i = 0; i < 60; i++)
                     {
@@ -964,6 +974,7 @@ namespace HUDProject
                             }
                         }
                     }
+
                     DisplayMap();
                     for (int i = 0; i < 60; i++)
                     {
@@ -1023,6 +1034,7 @@ namespace HUDProject
                     }
                 }
             }
+
             DisplayMap();
             for (int i = 0; i < 60; i++)
             {
@@ -1199,12 +1211,12 @@ namespace HUDProject
 
             if (battleState == 0)
             {
-                if (keyInfo.KeyChar == 'a' && selectedBattleOption != 0)
+                if ((keyInfo.KeyChar == 'a' && selectedBattleOption != 0) || (keyInfo.Key == ConsoleKey.LeftArrow && selectedBattleOption != 0))
                     selectedBattleOption--;
-                if (keyInfo.KeyChar == 'd' && selectedBattleOption != 2)
+                if ((keyInfo.KeyChar == 'd' && selectedBattleOption != 2) || (keyInfo.Key == ConsoleKey.RightArrow && selectedBattleOption != 2))
                     selectedBattleOption++;
 
-                if (keyInfo.Key == ConsoleKey.Enter)
+                if ((keyInfo.Key == ConsoleKey.Enter) || (keyInfo.Key == ConsoleKey.Spacebar) || (keyInfo.Key == ConsoleKey.Z))
                 {
                     if (selectedBattleOption == 0)
                     {
@@ -1223,18 +1235,18 @@ namespace HUDProject
             if (battleState == 1)
             {
                 
-                if (keyInfo.KeyChar == 'a' && selectedBattleEnemy != 0)
+                if ((keyInfo.KeyChar == 'a' && selectedBattleEnemy != 0) || (keyInfo.Key == ConsoleKey.LeftArrow && selectedBattleEnemy != 0))
                     selectedBattleEnemy--;
-                if (keyInfo.KeyChar == 'd' && selectedBattleEnemy != 2)
+                if ((keyInfo.KeyChar == 'd' && selectedBattleEnemy != 2) || (keyInfo.Key == ConsoleKey.RightArrow && selectedBattleEnemy != 2))
                     selectedBattleEnemy++;
 
-                if (keyInfo.Key == ConsoleKey.Enter)
+                if ((keyInfo.Key == ConsoleKey.Enter) || (keyInfo.Key == ConsoleKey.Spacebar) || (keyInfo.Key == ConsoleKey.Z))
                 {
                     battleState = 2;
                     return;
                 }
 
-                if (keyInfo.Key == ConsoleKey.Backspace)
+                if ((keyInfo.Key == ConsoleKey.Backspace) || (keyInfo.Key == ConsoleKey.X))
                 {
                     battleState = 0;
                     return;
@@ -1243,7 +1255,6 @@ namespace HUDProject
 
             if (keyInfo.Key == ConsoleKey.Escape)
             {
-                gameOver = true;
             }
 
             if (keyInfo.KeyChar == 'e' && currentWeapon != 1)
@@ -1565,7 +1576,7 @@ namespace HUDProject
             */
         }
 
-        static void GenarateBattleEnemies()
+        static void GenerateBattleEnemies()
         {
             /*
             battleEnemies Defines if there is a Enemy in any of the three battle positions and what enemy they are
@@ -1622,8 +1633,8 @@ namespace HUDProject
         static void BattleMain()
         {
             battleState = 69;
-            bool battleOver = false;
-            GenarateBattleEnemies();
+            battleOver = false;
+            GenerateBattleEnemies();
             DisplayBattle(false, 4);
             DisplayBattle(true, 4);
             DisplayText("Enemy in Positsion 1: " + enemyNames[currentBattleEnemys[0, 0]].ToString() + "   Enemy in Positsion 2: " + enemyNames[currentBattleEnemys[1, 0]] + "   Enemy in Positsion 3: " + enemyNames[currentBattleEnemys[2, 0]], true);
@@ -1754,9 +1765,7 @@ namespace HUDProject
                 
             }
         }
-
-
-
+        
         static void ClearMainBox()
         {
             for (int j = 1; j <= 24; j++)
