@@ -55,7 +55,7 @@ namespace HUDProject
 
         //Enemies
 
-        static int[,] enemyIndex = new int[10,10];
+        static int[,] enemyIndex = new int[10, 10];
         static string[] enemyNames = new string[10];
 
         static char[,] map = new char[,] // dimensions defined by following data:
@@ -94,7 +94,7 @@ namespace HUDProject
 
         static void Main(string[] args)
         {
-            
+
 
             if (Console.LargestWindowWidth > 99 || Console.LargestWindowHeight > 35)
             {
@@ -131,25 +131,10 @@ namespace HUDProject
             ShowHUD(true);
 
 
-            /*
-            ShowHUD(true);
-            
-
-            while (gameOver == false)
-            {
-                BattlePlayerInput();
-                DisplayBattle();
-                if (BattleState == 2)
-                {
-
-                }
-            }
-            */
-
             while (gameOver == false)
             {
                 ResetGame();
-                DisplayText("Generating map...",true);
+                DisplayText("Generating map...", true);
                 RandomizeMap();
 
                 while (genaratePlayerSpawn == true)
@@ -170,13 +155,13 @@ namespace HUDProject
 
                 ShowHUD(true);
                 SetHealthStatus();
-                DisplayText(healthStatus,true);
+                DisplayText(healthStatus, true);
 
                 int tilesBeforeSpawn = 0;
 
                 while (overworldLoop == true)
                 {
-                    if (RNG.Next(0,12) == 9 && tilesBeforeSpawn > 5)
+                    if (RNG.Next(0, 12) == 9 && tilesBeforeSpawn > 5)
                     {
                         BattleMain();
                         SetHealthStatus();
@@ -189,8 +174,8 @@ namespace HUDProject
                     tilesBeforeSpawn++;
                 }
             }
-            
-            
+
+
         }
 
         //Displays the HUD
@@ -670,7 +655,7 @@ namespace HUDProject
             if ((keyInfo.KeyChar == 'd' && playerX < map.GetLength(1) + 1) || (keyInfo.Key == ConsoleKey.RightArrow && playerX < map.GetLength(1) + 1))
                 playerX++;
 
-            if (map[playerY - 1,playerX - 2] == '^' || map[playerY - 1, playerX - 2] == '~')
+            if (map[playerY - 1, playerX - 2] == '^' || map[playerY - 1, playerX - 2] == '~')
             {
                 playerX = tempPlayerX;
                 playerY = tempPlayerY;
@@ -692,7 +677,7 @@ namespace HUDProject
                 currentWeapon++;
                 ShowHUD(false);
             }
-                
+
             if (keyInfo.KeyChar == 'q' && currentWeapon != 0)
             {
                 currentWeapon--;
@@ -822,7 +807,7 @@ namespace HUDProject
                 }
             }
 
-            
+
 
 
             if (numberOfSeedsWater != 0)
@@ -988,7 +973,7 @@ namespace HUDProject
                     }
                 }
             }
-            
+
 
             for (int i = 0; i < 60; i++)
             {
@@ -1067,7 +1052,7 @@ namespace HUDProject
         //selects Color for tiles on overworld
         static void SetBackgroundColor(int y, int x)
         {
-            
+
             switch (map[y, x])
             {
                 case '`':
@@ -1096,7 +1081,7 @@ namespace HUDProject
         //Takes a String and displays it in the UI text box
         static void DisplayText(string textToDisplay, bool clearText)
         {
-            
+
 
             if (clearText == true)
             {
@@ -1110,7 +1095,7 @@ namespace HUDProject
             int lineThree = textToDisplay.Length;
             int lineFour = textToDisplay.Length;
 
-            if (textToDisplay.Length > 57) 
+            if (textToDisplay.Length > 57)
             {
                 for (int i = 57; i >= 0; i--)
                 {
@@ -1157,20 +1142,20 @@ namespace HUDProject
                     }
                 }
             }
-            
+
             for (int i = 4; i > 0; i--)
             {
                 linesToDisplay[i] = linesToDisplay[i - 1];
             }
 
-            linesToDisplay[0] = textToDisplay.Substring(0,lineOne); 
+            linesToDisplay[0] = textToDisplay.Substring(0, lineOne);
 
             if (textToDisplay.Length > 57 && textToDisplay.Length <= 115)
             {
-                linesToDisplay[1] = textToDisplay.Substring(0,lineOne);
+                linesToDisplay[1] = textToDisplay.Substring(0, lineOne);
                 linesToDisplay[0] = textToDisplay.Substring(lineOne + 1, lineTwo - lineOne - 1);
             }
-                
+
             if (textToDisplay.Length > 115 && textToDisplay.Length <= 173)
             {
                 linesToDisplay[2] = textToDisplay.Substring(0, lineOne);
@@ -1234,7 +1219,7 @@ namespace HUDProject
 
             if (battleState == 1)
             {
-                
+
                 if ((keyInfo.KeyChar == 'a' && selectedBattleEnemy != 0) || (keyInfo.Key == ConsoleKey.LeftArrow && selectedBattleEnemy != 0))
                     selectedBattleEnemy--;
                 if ((keyInfo.KeyChar == 'd' && selectedBattleEnemy != 2) || (keyInfo.Key == ConsoleKey.RightArrow && selectedBattleEnemy != 2))
@@ -1269,11 +1254,11 @@ namespace HUDProject
                 ShowHUD(false);
             }
 
-            
+
 
         }
 
-        static void DisplayBattle(bool willDrawEnemies, int whichEnemyIsHurt)
+        static void DisplayBattle(bool willDrawEnemies = false, int whichEnemyIsHurt = 3)
         {
 
             if (willDrawEnemies == false)
@@ -1366,15 +1351,20 @@ namespace HUDProject
                 bool isHurt = false;
                 ClearMainBox();
                 //Top Window Draw
-                if (currentBattleEnemys[0, 0] >= 1)
+
+                //Enemy A (0)
+                if (currentBattleEnemys[0, 0] >= 1 && (whichEnemyIsHurt == 3 || whichEnemyIsHurt == 0))
                 {
                     spriteDrawX = 3;
                     spriteDrawY = 19;
+
+                    //Check which sprite to draw, then draw
                     if (whichEnemyIsHurt == 0)
                         isHurt = true;
                     DrawEnemySprites(currentBattleEnemys[0, 0], isHurt);
                     isHurt = false;
 
+                    //Draw Health Bar A (0)
                     Console.SetCursorPosition(7, 21);
                     Console.ForegroundColor = ConsoleColor.Green;
                     for (int i = 1; i <= 10; i++)
@@ -1388,15 +1378,19 @@ namespace HUDProject
                     Console.ResetColor();
                 }
 
-                if (currentBattleEnemys[1, 0] >= 1)
+                //Enemy B (1)
+                if (currentBattleEnemys[1, 0] >= 1 && (whichEnemyIsHurt == 3 || whichEnemyIsHurt == 1))
                 {
                     spriteDrawX = 23;
                     spriteDrawY = 22;
+
+                    //Check which sprite to draw, then draw
                     if (whichEnemyIsHurt == 1)
                         isHurt = true;
                     DrawEnemySprites(currentBattleEnemys[1, 0], isHurt);
                     isHurt = false;
 
+                    //Draw Health Bar B (1)
                     Console.SetCursorPosition(27, 24);
                     Console.ForegroundColor = ConsoleColor.Green;
                     for (int i = 1; i <= 10; i++)
@@ -1409,15 +1403,20 @@ namespace HUDProject
                     }
                     Console.ResetColor();
                 }
-                if (currentBattleEnemys[2, 0] >= 1)
+
+                //Enemy C (2)
+                if (currentBattleEnemys[2, 0] >= 1 && (whichEnemyIsHurt == 3 || whichEnemyIsHurt == 2))
                 {
                     spriteDrawX = 43;
                     spriteDrawY = 19;
+
+                    //Check which sprite to draw, then draw
                     if (whichEnemyIsHurt == 2)
                         isHurt = true;
                     DrawEnemySprites(currentBattleEnemys[2, 0], isHurt);
                     isHurt = false;
 
+                    //Draw Health Bar C (2)
                     Console.SetCursorPosition(47, 21);
                     Console.ForegroundColor = ConsoleColor.Green;
                     for (int i = 1; i <= 10; i++)
@@ -1431,9 +1430,10 @@ namespace HUDProject
                     Console.ResetColor();
                 }
             }
-
-
-            /*
+        }
+        
+        //Sprite Drawing
+        /*
             //18*18
             Console.Write("@────────────────────────────────────────────────────────────@"); 
             Console.Write("│                                                            │"); 
@@ -1523,85 +1523,43 @@ namespace HUDProject
             Console.Write("│                                                            │");
             Console.Write("@────────────────────────────────────────────────────────────@");
 
-            //Green Slime
-            {
-                int slimeX = 10;
-                int slimeY = 5;
-
-                Console.ForegroundColor = ConsoleColor.DarkGreen;
-
-                Console.SetCursorPosition(slimeX + 4, slimeY); Console.Write("▄▄▄▄▄▄▄");
-                Console.SetCursorPosition(slimeX + 1, slimeY + 1); Console.Write("▄           ▄");
-                Console.SetCursorPosition(slimeX + 1, slimeY + 5); Console.Write("▀           ▀");
-
-                Console.BackgroundColor = ConsoleColor.Green;
-
-                Console.SetCursorPosition(slimeX + 2, slimeY + 1); Console.Write("█▀▀     ▀▀█");
-                Console.SetCursorPosition(slimeX, slimeY + 2); Console.Write("█▀   ▄   ▄   ▀█");
-                Console.SetCursorPosition(slimeX, slimeY + 3); Console.Write("█    █   █    █");
-                Console.SetCursorPosition(slimeX, slimeY + 4); Console.Write("█▄           ▄█");
-                Console.SetCursorPosition(slimeX + 2, slimeY + 5); Console.Write("█▄▄▄▄▄▄▄▄▄█");
-
-                Console.ForegroundColor = ConsoleColor.Red;
-
-                Console.SetCursorPosition(slimeX + 2, slimeY + 4); Console.Write("▀▀       ▀▀");
-
-                Console.ResetColor();
-
-
-                slimeX = 10;
-                slimeY = 5;
-
-                Console.ForegroundColor = ConsoleColor.DarkRed;
-
-                Console.SetCursorPosition(slimeX + 4, slimeY); Console.Write("▄▄▄▄▄▄▄");
-                Console.SetCursorPosition(slimeX + 1, slimeY + 1); Console.Write("▄           ▄");
-                Console.SetCursorPosition(slimeX + 1, slimeY + 5); Console.Write("▀           ▀");
-
-                Console.BackgroundColor = ConsoleColor.Red;
-
-                Console.SetCursorPosition(slimeX + 2, slimeY + 1); Console.Write("█▀▀     ▀▀█");
-                Console.SetCursorPosition(slimeX, slimeY + 2); Console.Write("█▀           ▀█");
-                Console.SetCursorPosition(slimeX, slimeY + 3); Console.Write("█  ▀▀▀   ▀▀▀  █");
-                Console.SetCursorPosition(slimeX, slimeY + 4); Console.Write("█▄           ▄█");
-                Console.SetCursorPosition(slimeX + 2, slimeY + 5); Console.Write("█▄▄▄▄▄▄▄▄▄█");
-
-                Console.ForegroundColor = ConsoleColor.DarkRed;
-
-                Console.SetCursorPosition(slimeX + 2, slimeY + 4); Console.Write("▀▀       ▀▀");
-
-                Console.ResetColor();
-            
-            }
             */
-        }
 
         static void GenerateBattleEnemies()
         {
-            /*
-            battleEnemies Defines if there is a Enemy in any of the three battle positions and what enemy they are
-
-
-
-            */
-
+            //battleEnemies Defines if there is a Enemy in any of the three battle positions and what enemy they are
+            
+            int MaxEnemyIndexValue = 3;
             int EnemyIndexValue;
 
-            currentBattleEnemys[0,0] = 1;
+            currentBattleEnemys[0,0] = RNG.Next(0,2);
             currentBattleEnemys[1,0] = RNG.Next(0,2);
             currentBattleEnemys[2,0] = RNG.Next(0,2);
 
+            //If no positions get filled
+            if (currentBattleEnemys[0, 0] == 0 && currentBattleEnemys[1, 0] == 0 && currentBattleEnemys[2, 0] == 0)
+                currentBattleEnemys[RNG.Next(0, 3), 0] = 1;
+
+            //Position A (0)
             if (currentBattleEnemys[0,0] == 1)
             {
-                EnemyIndexValue = RNG.Next(1, 3);
+                EnemyIndexValue = RNG.Next(1, MaxEnemyIndexValue);
                 currentBattleEnemys[0, 0] = EnemyIndexValue;
                 currentBattleEnemys[0, 1] = enemyIndex[EnemyIndexValue, 0];
                 currentBattleEnemys[0, 2] = enemyIndex[EnemyIndexValue, 1];
             }
+            else
+            {
+                EnemyIndexValue = 0;
+                currentBattleEnemys[1, 0] = EnemyIndexValue;
+                currentBattleEnemys[1, 1] = enemyIndex[EnemyIndexValue, 0];
+                currentBattleEnemys[1, 2] = enemyIndex[EnemyIndexValue, 1];
+            }
 
+            //Position B (1)
             if (currentBattleEnemys[1,0] == 1)
             {
-                EnemyIndexValue = RNG.Next(1, 3);
+                EnemyIndexValue = RNG.Next(1, MaxEnemyIndexValue);
                 currentBattleEnemys[1, 0] = EnemyIndexValue;
                 currentBattleEnemys[1, 1] = enemyIndex[EnemyIndexValue, 0];
                 currentBattleEnemys[1, 2] = enemyIndex[EnemyIndexValue, 1];
@@ -1614,9 +1572,10 @@ namespace HUDProject
                 currentBattleEnemys[1, 2] = enemyIndex[EnemyIndexValue, 1];
             }
 
+            //Position C (2)
             if (currentBattleEnemys[2,0] == 1)
             {
-                EnemyIndexValue = RNG.Next(1, 3);
+                EnemyIndexValue = RNG.Next(1, MaxEnemyIndexValue);
                 currentBattleEnemys[2, 0] = EnemyIndexValue;
                 currentBattleEnemys[2, 1] = enemyIndex[EnemyIndexValue, 0];
                 currentBattleEnemys[2, 2] = enemyIndex[EnemyIndexValue, 1];
@@ -1628,6 +1587,7 @@ namespace HUDProject
                 currentBattleEnemys[2, 1] = enemyIndex[EnemyIndexValue, 0];
                 currentBattleEnemys[2, 2] = enemyIndex[EnemyIndexValue, 1];
             }
+
         }
 
         static void BattleMain()
@@ -1635,9 +1595,9 @@ namespace HUDProject
             battleState = 69;
             battleOver = false;
             GenerateBattleEnemies();
-            DisplayBattle(false, 4);
-            DisplayBattle(true, 4);
-            DisplayText("Enemy in Positsion 1: " + enemyNames[currentBattleEnemys[0, 0]].ToString() + "   Enemy in Positsion 2: " + enemyNames[currentBattleEnemys[1, 0]] + "   Enemy in Positsion 3: " + enemyNames[currentBattleEnemys[2, 0]], true);
+            DisplayBattle(false);
+            DisplayBattle(true);
+            //DisplayText("Enemy in Positsion 1: " + enemyNames[currentBattleEnemys[0, 0]].ToString() + "   Enemy in Positsion 2: " + enemyNames[currentBattleEnemys[1, 0]] + "   Enemy in Positsion 3: " + enemyNames[currentBattleEnemys[2, 0]], true);
 
             Console.ReadKey(true);
 
@@ -1645,7 +1605,7 @@ namespace HUDProject
 
             while (battleOver == false)
             {
-                DisplayBattle(false, 4);
+                DisplayBattle(false);
                 BattlePlayerInput();
 
                 //Attacking Phase
@@ -1682,9 +1642,10 @@ namespace HUDProject
                         battleState = 4;
                     }
                     Console.ReadKey(true);
-                    DisplayBattle(true, 4);
+                    DisplayBattle(true);
                 }
 
+                //Running away
                 if (battleState == 3)
                 {
                     DisplayText("You Try to Run Away", true);
@@ -1891,19 +1852,19 @@ namespace HUDProject
                         Console.SetCursorPosition(spriteDrawX + 4, spriteDrawY - 15); Console.Write("██▀▄██▄▀██");
                         Console.SetCursorPosition(spriteDrawX + 5, spriteDrawY - 14); Console.Write("▀██████▀");
                         Console.SetCursorPosition(spriteDrawX + 6, spriteDrawY - 13); Console.Write("█ ██ █");
-                        Console.SetCursorPosition(spriteDrawX, spriteDrawY - 12); Console.Write("▐▐▐ ▄▄▄ ▄▄ ▄▄▄ ▌▌▌");
+                        Console.SetCursorPosition(spriteDrawX, spriteDrawY - 12);     Console.Write("▐▐▐ ▄▄▄ ▄▄ ▄▄▄ ▌▌▌");
                         Console.SetCursorPosition(spriteDrawX + 1, spriteDrawY - 11); Console.Write("▀▀▄█ ▄▄██▄▄ █▄▀▀");
                         Console.SetCursorPosition(spriteDrawX + 1, spriteDrawY - 10); Console.Write("▐▌█ ▀▄▄██▄▄▀ █▐▌");
-                        Console.SetCursorPosition(spriteDrawX + 2, spriteDrawY - 9); Console.Write("▐▌ ▀▄▄██▄▄▀ ▐▌");
-                        Console.SetCursorPosition(spriteDrawX + 6, spriteDrawY - 8); Console.Write("▀▄██▄▀");
-                        Console.SetCursorPosition(spriteDrawX + 6, spriteDrawY - 7); Console.Write("▄ ██ ▄");
-                        Console.SetCursorPosition(spriteDrawX + 5, spriteDrawY - 6); Console.Write("█▄█▀▀█▄█");
-                        Console.SetCursorPosition(spriteDrawX + 4, spriteDrawY - 5); Console.Write("▄█      █▄");
-                        Console.SetCursorPosition(spriteDrawX + 3, spriteDrawY - 4); Console.Write("▄█        █▄");
-                        Console.SetCursorPosition(spriteDrawX + 2, spriteDrawY - 3); Console.Write("▐█          █▌");
-                        Console.SetCursorPosition(spriteDrawX + 3, spriteDrawY - 2); Console.Write("▐▌        ▐▌");
-                        Console.SetCursorPosition(spriteDrawX + 4, spriteDrawY - 1); Console.Write("█        █");
-                        Console.SetCursorPosition(spriteDrawX + 2, spriteDrawY); Console.Write("▐▐▐█      ██▐▐");
+                        Console.SetCursorPosition(spriteDrawX + 2, spriteDrawY - 9);  Console.Write("▐▌ ▀▄▄██▄▄▀ ▐▌");
+                        Console.SetCursorPosition(spriteDrawX + 6, spriteDrawY - 8);  Console.Write("▀▄██▄▀");
+                        Console.SetCursorPosition(spriteDrawX + 6, spriteDrawY - 7);  Console.Write("▄ ██ ▄");
+                        Console.SetCursorPosition(spriteDrawX + 5, spriteDrawY - 6);  Console.Write("█▄█▀▀█▄█");
+                        Console.SetCursorPosition(spriteDrawX + 4, spriteDrawY - 5);  Console.Write("▄█      █▄");
+                        Console.SetCursorPosition(spriteDrawX + 3, spriteDrawY - 4);  Console.Write("▄█        █▄");
+                        Console.SetCursorPosition(spriteDrawX + 2, spriteDrawY - 3);  Console.Write("▐█          █▌");
+                        Console.SetCursorPosition(spriteDrawX + 3, spriteDrawY - 2);  Console.Write("▐▌        ▐▌");
+                        Console.SetCursorPosition(spriteDrawX + 4, spriteDrawY - 1);  Console.Write("█        █");
+                        Console.SetCursorPosition(spriteDrawX + 2, spriteDrawY);      Console.Write("▐▐▐█      ██▐▐");
 
                         Console.ResetColor();
                     }
