@@ -11,20 +11,23 @@ namespace HUDProject
         static Random RNG = new Random();
 
 
-        static Player player = new Player();
+        public static Player player = new Player();
 
         //OverWorld Movement
-        static int tempPlayerX;
-        static int tempPlayerY;
+        public static int tempPlayerX;
+        public static int tempPlayerY;
+
+
         static bool genaratePlayerSpawn = true;
-        static bool gameOver = false;
-        static bool overworldLoop;
+
+        public static bool gameOver = false;
+        public static bool overworldLoop;
 
         //Battle Menu
-        static int selectedBattleOption = 0;
-        static int selectedBattleEnemy = 0;
+        public static int selectedBattleOption = 0;
+        public static int selectedBattleEnemy = 0;
         static string[] battleOptions = new string[6];
-        static int battleState;
+        public static int battleState;
         static int spriteDrawX;
         static int spriteDrawY;
 
@@ -32,6 +35,7 @@ namespace HUDProject
 
         static string[] linesToDisplay = new string[5];
 
+        
 
         //Enemies
         static Enemy[] battleEnemys = new Enemy[3];
@@ -39,7 +43,7 @@ namespace HUDProject
         static int[,] enemyIndex = new int[10, 10];
         static string[] enemyNames = new string[10];
 
-        static char[,] map = new char[,] // dimensions defined by following data:
+        public static char[,] map = new char[,] // dimensions defined by following data:
             {
                 {'^','^','^','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','^','^','^','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`'},
                 {'^','^','`','`','`','`','*','*','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','~','~','~','`','`','`','^','^','^','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`'},
@@ -147,7 +151,7 @@ namespace HUDProject
                         tilesBeforeSpawn = 0;
                     }
                     PlayerDraw();
-                    OverWorldPlayerInput();
+                    PlayerInput.ReadPlayerInput("overworld");
                     tilesBeforeSpawn++;
                 }
             }
@@ -156,7 +160,7 @@ namespace HUDProject
         }
 
         //Displays the HUD
-        static void ShowHUD(bool resetUI)
+        public static void ShowHUD(bool resetUI)
         {
             //SetHealthStatus();
 
@@ -389,55 +393,6 @@ namespace HUDProject
 
             //Console.WriteLine(" Player Stats are Successfully Reset");
             //Console.ResetColor();
-
-        }
-
-        //Game Based on inputs
-        static void OverWorldPlayerInput()
-        {
-            ConsoleKeyInfo keyInfo;
-            keyInfo = Console.ReadKey(true);
-
-            tempPlayerX = player.x;
-            tempPlayerY = player.y;
-
-            if ((keyInfo.KeyChar == 's' && player.y < map.GetLength(0)) || (keyInfo.Key == ConsoleKey.DownArrow && player.y < map.GetLength(0)))
-                player.y++;
-            if ((keyInfo.KeyChar == 'w' && player.y > 1) || (keyInfo.Key == ConsoleKey.UpArrow && player.y > 1))
-                player.y--;
-            if ((keyInfo.KeyChar == 'a' && player.x > 2) || (keyInfo.Key == ConsoleKey.LeftArrow && player.x > 2))
-                player.x--;
-            if ((keyInfo.KeyChar == 'd' && player.x < map.GetLength(1) + 1) || (keyInfo.Key == ConsoleKey.RightArrow && player.x < map.GetLength(1) + 1))
-                player.x++;
-
-            if (map[player.y - 1, player.x - 2] == '^' || map[player.y - 1, player.x - 2] == '~')
-            {
-                player.x = tempPlayerX;
-                player.y = tempPlayerY;
-            }
-
-            if (keyInfo.Key == ConsoleKey.Escape)
-            {
-                gameOver = true;
-                overworldLoop = false;
-            }
-
-            if (keyInfo.KeyChar == 'r')
-            {
-                overworldLoop = false;
-            }
-
-            if (keyInfo.KeyChar == 'e' && player.currentWeapon != 1)
-            {
-                player.currentWeapon++;
-                ShowHUD(false);
-            }
-
-            if (keyInfo.KeyChar == 'q' && player.currentWeapon != 0)
-            {
-                player.currentWeapon--;
-                ShowHUD(false);
-            }
 
         }
 
@@ -833,7 +788,7 @@ namespace HUDProject
             }
         }
 
-        //Takes a String and displays it in the UI text box
+        //Takes a String and displays it in the UI Display box
         public static void DisplayText(string textToDisplay = "You shouldn't see this", bool clearText = true)
         {
 
@@ -954,74 +909,6 @@ namespace HUDProject
 
 
             Console.ResetColor();
-        }
-
-        //Game Based on inputs
-        static void BattlePlayerInput()
-        {
-            ConsoleKeyInfo keyInfo;
-            keyInfo = Console.ReadKey(true);
-
-            if (battleState == 0)
-            {
-                if ((keyInfo.KeyChar == 'a' && selectedBattleOption != 0) || (keyInfo.Key == ConsoleKey.LeftArrow && selectedBattleOption != 0))
-                    selectedBattleOption--;
-                if ((keyInfo.KeyChar == 'd' && selectedBattleOption != 2) || (keyInfo.Key == ConsoleKey.RightArrow && selectedBattleOption != 2))
-                    selectedBattleOption++;
-
-                if ((keyInfo.Key == ConsoleKey.Enter) || (keyInfo.Key == ConsoleKey.Spacebar) || (keyInfo.Key == ConsoleKey.Z))
-                {
-                    if (selectedBattleOption == 0)
-                    {
-                        battleState = 1;
-                        return;
-                    }
-
-                    if (selectedBattleOption == 2)
-                    {
-                        battleState = 3;
-                        return;
-                    }
-                }
-            }
-
-            if (battleState == 1)
-            {
-
-                if ((keyInfo.KeyChar == 'a' && selectedBattleEnemy != 0) || (keyInfo.Key == ConsoleKey.LeftArrow && selectedBattleEnemy != 0))
-                    selectedBattleEnemy--;
-                if ((keyInfo.KeyChar == 'd' && selectedBattleEnemy != 2) || (keyInfo.Key == ConsoleKey.RightArrow && selectedBattleEnemy != 2))
-                    selectedBattleEnemy++;
-
-                if ((keyInfo.Key == ConsoleKey.Enter) || (keyInfo.Key == ConsoleKey.Spacebar) || (keyInfo.Key == ConsoleKey.Z))
-                {
-                    
-                    battleState = 2;
-                    return;
-                }
-
-                if ((keyInfo.Key == ConsoleKey.Backspace) || (keyInfo.Key == ConsoleKey.X))
-                {
-                    battleState = 0;
-                    return;
-                }
-            }
-
-            if (keyInfo.Key == ConsoleKey.Escape)
-            {
-            }
-
-            if (keyInfo.KeyChar == 'e' && player.currentWeapon != 1)
-            {
-                player.currentWeapon++;
-                ShowHUD(false);
-            }
-
-            if (keyInfo.KeyChar == 'q' && player.currentWeapon != 0)
-            {
-                player.currentWeapon--;
-                ShowHUD(false);
-            }
         }
 
         static void DisplayBattleMain(int whichEnemyIsHurt = 3)
@@ -1244,7 +1131,7 @@ namespace HUDProject
             while (battleOver == false)
             {
                 DisplayBattleDisplayBox();
-                BattlePlayerInput();
+                PlayerInput.ReadPlayerInput("battle");
 
                 //Attacking Phase
                 if (battleState == 2)

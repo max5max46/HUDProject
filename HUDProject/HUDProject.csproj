@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Enemy.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="PlayerInput.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
