@@ -18,10 +18,11 @@ namespace HUDProject
         public int attack;
         public int xp;
         private int luck;
+        public int coins;
         private float missChance = 7.5f;
 
         //Setup Variables
-        public Enemy(string name = "none", int health = 0, int attack = 0, int xp =0, int luck = 0)
+        public Enemy(string name = "none", int health = 0, int attack = 0, int xp =0, int luck = 0, int coins = 0)
         {
             this.name = name;
             this.health = health;
@@ -29,6 +30,7 @@ namespace HUDProject
             this.attack = attack;
             this.xp = xp;
             this.luck = luck;
+            this.coins = coins;
         }
 
         //Takes a number and subtracts it form health

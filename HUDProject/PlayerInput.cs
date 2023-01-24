@@ -8,10 +8,10 @@ namespace HUDProject
 {
     internal class PlayerInput
     {
-        private static string simpleInput = "";
-
-        public static void ReadPlayerInput(string inputState)
+        public static string ReadPlayerInput()
         {
+            string simpleInput = "";
+
             ConsoleKeyInfo keyInfo;
             keyInfo = Console.ReadKey(true);
 
@@ -45,16 +45,7 @@ namespace HUDProject
             if (keyInfo.KeyChar == 'q')
                 simpleInput = "cycleLeft";
 
-            switch (inputState)
-            {
-                case "overworld":
-                    Overworld();
-                    break;
-
-                case "battle":
-                    Battle();
-                    break;
-            }
+            return simpleInput;
         }
 
         //switch (simpleInput)
@@ -100,150 +91,6 @@ namespace HUDProject
         //            break;
         //    }
 
-        private static void Overworld()
-        {
-            Program.tempPlayerX = Program.player.x;
-            Program.tempPlayerY = Program.player.y;
-
-            switch (simpleInput)
-            {
-                case "down":
-                    if (Program.player.y < Program.map.GetLength(0))
-                        Program.player.y++;
-                    break;
-
-                case "up":
-                    if (Program.player.y > 1)
-                        Program.player.y--;
-                    break;
-
-                case "right":
-                    if (Program.player.x < Program.map.GetLength(1) + 1)
-                        Program.player.x++;
-                    break;
-
-                case "left":
-                    if (Program.player.x > 2)
-                        Program.player.x--;
-                    break;
-
-                case "confirm":
-                    //Unused
-                    break;
-
-                case "back":
-                    //Unused
-                    break;
-
-                case "exit":
-                    Program.gameOver = true;
-                    Program.overworldLoop = false;
-                    return;
-
-                case "reload":
-                    Program.overworldLoop = false;
-                    return;
-
-                case "cycleRight":
-                    if (Program.player.currentWeapon != 1)
-                    {
-                        Program.player.currentWeapon++;
-                        Program.ShowHUD(false);
-                    }
-                    break;
-
-                case "cycleLeft":
-                    if (Program.player.currentWeapon != 0)
-                    {
-                        Program.player.currentWeapon--;
-                        Program.ShowHUD(false);
-                    }
-                    break;
-            }
-
-            //Check if the player can move on to a Specified tile
-            if (Program.map[Program.player.y - 1, Program.player.x - 2] == '^' || Program.map[Program.player.y - 1, Program.player.x - 2] == '~')
-            {
-                Program.player.x = Program.tempPlayerX;
-                Program.player.y = Program.tempPlayerY;
-            }
-        }
-
-        private static void Battle()
-        {
-            switch (simpleInput)
-            {
-                case "down":
-                    //Unused
-                    break;
-
-                case "up":
-                    //Unused
-                    break;
-
-                case "right":
-                    if (Program.selectedBattleOption != 2 && Program.battleState == 0)
-                        Program.selectedBattleOption++;
-
-                    if (Program.selectedBattleEnemy != 2 && Program.battleState == 1)
-                        Program.selectedBattleEnemy++;
-                    break;
-
-                case "left":
-                    if (Program.selectedBattleOption != 0 && Program.battleState == 0)
-                        Program.selectedBattleOption--;
-
-                    if (Program.selectedBattleEnemy != 0 && Program.battleState == 1)
-                        Program.selectedBattleEnemy--;
-                    break;
-
-                case "confirm":
-                    if (Program.battleState == 1)
-                        Program.battleState = 2;
-
-                    if (Program.battleState == 0)
-                    {
-                        if (Program.selectedBattleOption == 0)
-                            Program.battleState = 1;
-
-                        if (Program.selectedBattleOption == 2)
-                            Program.battleState = 3;
-                    }
-                    return;
-
-                case "back":
-                    if (Program.battleState == 1)
-                    {
-                        Program.battleState = 0;
-                        return;
-                    }
-                    break;
-
-                case "exit":
-                    //Unused (Fix)
-                    break;
-
-                case "reload":
-                    //Unused
-                    break;
-
-                case "cycleRight":
-                    if (Program.player.currentWeapon != 1)
-                    {
-                        Program.player.currentWeapon++;
-                        Program.ShowHUD(false);
-                    }
-                    break;
-
-
-                case "cycleLeft":
-                    if (Program.player.currentWeapon != 0)
-                    {
-                        Program.player.currentWeapon--;
-                        Program.ShowHUD(false);
-                    }
-                    break;
-            }
-        }
+        
     }
 }

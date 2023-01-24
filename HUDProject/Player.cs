@@ -15,13 +15,16 @@ namespace HUDProject
         public int maxHealth;
         public int attack;
         public int luck;
+        public int coins;
         private float missChance = 7.5f;
 
         //Level up System varibles
         public int level;
         public int xp;
         public int xpToNextLevelUp;
+
         private int healthIncreaseOnLvl;
+        private int luckIncreaseOnLvl;
 
         //Weapon Arrays and Ints
         public int currentWeapon;
@@ -38,13 +41,16 @@ namespace HUDProject
         {
             maxHealth = 40;
             health = maxHealth;
-            attack = 3;
+            attack = 15;
             luck = 5;
+            coins = 0;
 
             level = 1;
             xp = 0;
             xpToNextLevelUp = 100;
+
             healthIncreaseOnLvl = 10;
+            luckIncreaseOnLvl = 1;
 
             currentWeapon = 0;
 
@@ -78,6 +84,7 @@ namespace HUDProject
             {
                 level += 1;
                 maxHealth += healthIncreaseOnLvl;
+                luck += luckIncreaseOnLvl;
                 health = maxHealth;
                 xp -= xpToNextLevelUp;
                 numberOfTimesLeveled += 1;
@@ -88,7 +95,9 @@ namespace HUDProject
                 Program.DisplayText("LEVEL UP!!!", true);
                 //DisplayText("Player gained " + numberOfTimesLeveled + " Levels",true);
                 Program.DisplayText("Player gained +" + (numberOfTimesLeveled * healthIncreaseOnLvl) + " Max Health", false);
+                Program.DisplayText("Player gained +" + (numberOfTimesLeveled * luckIncreaseOnLvl) + " Luck", false);
                 Program.DisplayText("Player's Health Restored", false);
+                Console.ReadKey(true);
             }
         }
 
