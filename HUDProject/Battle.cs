@@ -12,10 +12,10 @@ namespace HUDProject
         static Random RNG = new Random();
 
         //Battle Menu
-        public static int selectedBattleOption = 0;
-        public static int selectedBattleEnemy = 0;
+        static int selectedBattleOption = 0;
+        static int selectedBattleEnemy = 0;
         static string[] battleOptions = new string[6];
-        public static int battleState;
+        static int battleState;
         
         //Enemy Class used to add 3 Enemys
         static Enemy[] battleEnemys = new Enemy[3];
